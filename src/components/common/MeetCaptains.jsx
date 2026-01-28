@@ -48,7 +48,7 @@ const MeetCaptains = () => {
                             initial={{ opacity: 0, y: 50 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
-                            transition={{ duration: 0.8, delay: i * 0.2, ease: "easeOut" }}
+                            transition={{ duration: 1.2, delay: i * 0.2, ease: "easeOut" }}
                             className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden group hover:border-primary/50 transition-colors"
                         >
                             <div className="relative h-[380px] overflow-hidden">

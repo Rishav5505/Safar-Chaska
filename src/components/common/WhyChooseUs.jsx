@@ -93,7 +93,7 @@ const WhyChooseUs = () => {
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: i * 0.05 }}
+                            transition={{ duration: 1, delay: i * 0.1, ease: "easeOut" }}
                             className="bg-white p-8 md:p-10 rounded-[2rem] shadow-sm border border-slate-100 group hover:border-primary transition-all cursor-pointer relative overflow-hidden"
                         >
                             <div className={`w-14 h-14 md:w-16 md:h-16 ${usp.bg} ${usp.color} rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all`}>

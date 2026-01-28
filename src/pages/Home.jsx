@@ -157,7 +157,7 @@ const Home = () => {
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
+                        transition={{ duration: 1.2, delay: 0.4 }}
                         className="text-base md:text-xl text-slate-200 mb-6 md:mb-10 max-w-2xl mx-auto leading-relaxed"
                     >
                         Handcrafted journeys to the most secluded corners of Northern India. Professional guides, safe travels, and lifetime memories.
@@ -166,7 +166,7 @@ const Home = () => {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.6 }}
+                        transition={{ duration: 1.2, delay: 0.6 }}
                         className="flex flex-col sm:flex-row items-center justify-center gap-4"
                     >
                         <Link to="/packages">
@@ -216,7 +216,7 @@ const Home = () => {
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ duration: 0.6, delay: i * 0.1 }}
+                                transition={{ duration: 1, delay: i * 0.1 }}
                                 className="bg-white p-8 rounded-3xl text-center shadow-sm border border-slate-100 group hover:shadow-xl transition-all"
                             >
                                 <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">

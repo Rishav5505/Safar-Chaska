@@ -43,7 +43,7 @@ const SocialSection = () => {
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: i * 0.1 }}
+                            transition={{ duration: 1, delay: i * 0.1, ease: "easeOut" }}
                             className="group relative aspect-square rounded-[2rem] overflow-hidden cursor-pointer"
                         >
                             <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Instagram Post" />
