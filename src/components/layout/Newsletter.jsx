@@ -18,7 +18,7 @@ const Newsletter = () => {
     };
 
     return (
-        <section className="py-24 bg-primary selection:text-primary selection:bg-white text-white">
+        <section className="py-8 md:py-24 bg-primary selection:text-primary selection:bg-white text-white">
             <div className="container-custom">
                 <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-12">
                     <div className="md:w-1/2 text-center md:text-left">

@@ -32,9 +32,9 @@ const captains = [
 
 const MeetCaptains = () => {
     return (
-        <section className="py-24 bg-slate-900 text-white">
+        <section className="py-8 md:py-24 bg-slate-900 text-white">
             <div className="container-custom">
-                <div className="text-center mb-16">
+                <div className="text-center mb-10 md:mb-16">
                     <Reveal center>
                         <h2 className="text-4xl font-bold text-white tracking-tight">Meet Your Captains</h2>
                     </Reveal>

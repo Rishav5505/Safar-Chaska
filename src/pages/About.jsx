@@ -20,7 +20,7 @@ const About = () => {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative h-[70vh] flex items-center justify-center overflow-hidden bg-slate-900">
+            <section className="relative min-h-[50vh] md:h-[70vh] flex items-center justify-center overflow-hidden bg-slate-900 pt-40 md:pt-0">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage: `url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=2000')` }}
@@ -28,7 +28,7 @@ const About = () => {
                     <div className="absolute inset-0 bg-slate-900/60"></div>
                 </div>
 
-                <div className="relative z-10 text-center text-white px-4 pt-20">
+                <div className="relative z-10 text-center text-white px-4 md:pt-20">
                     <Reveal center width="100%">
                         <h1 className="text-5xl md:text-8xl font-bold mb-6 tracking-tight drop-shadow-2xl">
                             Our Story
@@ -48,7 +48,7 @@ const About = () => {
             </section>
 
             {/* Mission Section */}
-            <section className="py-24">
+            <section className="py-8 md:py-24">
                 <div className="container-custom">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                         <div>
@@ -89,7 +89,7 @@ const About = () => {
             </section>
 
             {/* Stats */}
-            <section className="py-24 bg-slate-50">
+            <section className="py-8 md:py-24 bg-slate-50">
                 <div className="container-custom">
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
                         {stats.map((stat, i) => (
@@ -106,7 +106,7 @@ const About = () => {
             </section>
 
             {/* Quote */}
-            <section className="py-32 bg-white text-center">
+            <section className="py-12 md:py-32 bg-white text-center">
                 <div className="container-custom max-w-4xl mx-auto">
                     <Compass className="w-12 h-12 text-secondary/40 mx-auto mb-10" />
                     <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-8 italic">

@@ -132,23 +132,23 @@ const Home = () => {
             <Navbar />
             {/* Hero Section implementation... */}
             {/* ... keeping existing Hero code ... */}
-            <section ref={heroRef} className="relative h-[85vh] flex items-center justify-center overflow-hidden bg-slate-900">
+            <section ref={heroRef} className="relative min-h-[60vh] md:h-[85vh] flex items-center justify-center overflow-hidden bg-slate-900 pt-40 md:pt-0">
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1600')` }}>
                     <div className="absolute inset-0 bg-slate-900/40"></div>
                 </div>
 
-                <div className="relative z-10 text-center text-white px-4 max-w-5xl mx-auto pt-20">
+                <div className="relative z-10 text-center text-white px-4 max-w-5xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full mb-8"
+                        className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full mb-4 md:mb-8"
                     >
                         <span className="h-2 w-2 rounded-full bg-secondary"></span>
-                        <span className="text-xs font-bold tracking-widest uppercase">The Himalayan Season is Live</span>
+                        <span className="text-[10px] md:text-xs font-bold tracking-widest uppercase">The Himalayan Season is Live</span>
                     </motion.div>
 
                     <Reveal width="100%" delay={0.2} center>
-                        <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-tight">
+                        <h1 className="text-4xl md:text-7xl font-bold mb-4 md:mb-6 tracking-tight leading-tight">
                             Explore The Unseen <br />
                             <span className="text-gradient">Himalayas.</span>
                         </h1>
@@ -158,7 +158,7 @@ const Home = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
-                        className="text-lg md:text-xl text-slate-200 mb-10 max-w-2xl mx-auto leading-relaxed"
+                        className="text-base md:text-xl text-slate-200 mb-6 md:mb-10 max-w-2xl mx-auto leading-relaxed"
                     >
                         Handcrafted journeys to the most secluded corners of Northern India. Professional guides, safe travels, and lifetime memories.
                     </motion.p>
@@ -186,9 +186,9 @@ const Home = () => {
             <PopularPackages />
 
             {/* Weather Widget */}
-            <section className="py-24 bg-white">
+            <section className="py-8 md:py-20 bg-white">
                 <div className="container-custom">
-                    <div className="text-center mb-16">
+                    <div className="text-center mb-10 md:mb-16">
                         <Reveal center>
                             <h2 className="text-4xl font-bold text-slate-900">Live From The Peaks</h2>
                         </Reveal>
@@ -207,7 +207,7 @@ const Home = () => {
             <MeetCaptains />
 
             {/* Experience Counters */}
-            <section className="py-24 bg-slate-50 overflow-hidden">
+            <section className="py-8 md:py-20 bg-slate-50 overflow-hidden">
                 <div className="container-custom">
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
                         {stats.map((stat, i) => (
@@ -233,9 +233,9 @@ const Home = () => {
             </section>
 
             {/* Categories */}
-            <section className="py-24 bg-white">
+            <section className="py-8 md:py-20 bg-white">
                 <div className="container-custom">
-                    <div className="text-center mb-16">
+                    <div className="text-center mb-10 md:mb-16">
                         <Reveal center>
                             <h2 className="text-4xl font-bold text-slate-900">Find Your Vibe</h2>
                         </Reveal>
@@ -271,7 +271,7 @@ const Home = () => {
             </section>
 
             {/* Gallery */}
-            <section className="py-24 bg-slate-900">
+            <section className="py-8 md:py-20 bg-slate-900">
                 <div className="container-custom">
                     <div className="text-center mb-16 text-white">
                         <h2 className="text-4xl font-bold">Gallery of Dreams</h2>
@@ -316,9 +316,9 @@ const Home = () => {
             </section>
 
             {/* Featured */}
-            <section className="py-24 bg-slate-50">
+            <section className="py-8 md:py-20 bg-slate-50">
                 <div className="container-custom">
-                    <div className="text-center mb-16">
+                    <div className="text-center mb-10 md:mb-16">
                         <h2 className="text-4xl font-bold text-slate-900 tracking-tight">Escape to Chakrata</h2>
                     </div>
                     <div className="max-w-6xl mx-auto bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 flex flex-col md:flex-row">
@@ -341,7 +341,7 @@ const Home = () => {
             </section>
 
             {/* Trust */}
-            <section className="py-24 bg-slate-900 text-white">
+            <section className="py-8 md:py-20 bg-slate-900 text-white">
                 <div className="container-custom text-center mb-16">
                     <h2 className="text-4xl font-bold">Safety In Every Step</h2>
                 </div>

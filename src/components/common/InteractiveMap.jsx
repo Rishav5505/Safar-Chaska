@@ -42,9 +42,9 @@ const InteractiveMap = () => {
     const [activeSpot, setActiveSpot] = useState(null);
 
     return (
-        <section className="py-24 bg-white">
+        <section className="py-8 md:py-24 bg-white text-slate-900 overflow-hidden">
             <div className="container-custom">
-                <div className="text-center mb-16">
+                <div className="text-center mb-10 md:mb-16">
                     <Reveal center>
                         <h2 className="text-4xl font-bold text-slate-900 tracking-tight">Interactive Map</h2>
                     </Reveal>

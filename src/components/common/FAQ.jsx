@@ -26,10 +26,10 @@ const FAQ = () => {
     const [activeIndex, setActiveIndex] = useState(null);
 
     return (
-        <section className="py-20 bg-white relative">
+        <section className="py-8 md:py-24 bg-white relative">
             <div className="container-custom">
                 <div className="max-w-3xl mx-auto">
-                    <div className="text-center mb-12">
+                    <div className="text-center mb-8 md:mb-12">
                         <Reveal center>
                             <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Commonly Asked</h2>
                         </Reveal>

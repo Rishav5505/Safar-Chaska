@@ -52,7 +52,7 @@ const Navbar = () => {
             </AnimatePresence>
 
             {/* Main Navbar */}
-            <nav className={`transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-5'}`}>
+            <nav className={`transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-2 md:py-3' : 'bg-transparent py-3 md:py-5'}`}>
                 <div className="container-custom flex items-center justify-between">
                     <Link to="/" className="flex items-center space-x-3">
                         <div className="w-10 h-10 rounded-lg overflow-hidden shadow-md">
@@ -62,7 +62,7 @@ const Navbar = () => {
                                 className="w-full h-full object-cover"
                             />
                         </div>
-                        <span className={`text-xl font-bold tracking-tight ${scrolled ? 'text-slate-900' : 'text-white'}`}>
+                        <span className={`text-lg md:text-xl font-bold tracking-tight ${scrolled ? 'text-slate-900' : 'text-white'}`}>
                             Safar<span className="text-secondary">Chaska.</span>
                         </span>
                     </Link>

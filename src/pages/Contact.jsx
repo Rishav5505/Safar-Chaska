@@ -13,7 +13,7 @@ const Contact = () => {
             <Navbar />
 
             {/* Header */}
-            <section className="relative pt-48 pb-32 bg-slate-900 text-center text-white overflow-hidden">
+            <section className="relative pt-32 pb-24 md:pt-48 md:pb-32 bg-slate-900 text-center text-white overflow-hidden">
                 <div className="container-custom relative z-10">
                     <Reveal center width="100%">
                         <h1 className="text-5xl md:text-8xl font-bold mb-6 tracking-tight drop-shadow-2xl text-white">
@@ -36,7 +36,7 @@ const Contact = () => {
                 </div>
             </section>
 
-            <section className="py-20 -mt-16 relative z-30">
+            <section className="py-8 md:py-20 -mt-16 relative z-30">
                 <div className="container-custom">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
                         {/* Info */}
@@ -89,7 +89,7 @@ const Contact = () => {
             </section>
 
             {/* Social */}
-            <section className="py-24 bg-white border-t border-slate-50">
+            <section className="py-8 md:py-24 bg-white border-t border-slate-50">
                 <div className="container-custom text-center">
                     <h2 className="text-3xl font-bold text-slate-900 mb-12">Connect With Us</h2>
                     <div className="flex justify-center gap-8">

@@ -14,24 +14,24 @@ const feed = [
 
 const SocialSection = () => {
     return (
-        <section className="py-32 bg-white overflow-hidden">
-            <div className="container mx-auto px-4">
-                <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-20 max-w-7xl mx-auto">
-                    <div className="max-w-2xl">
-                        <Reveal>
-                            <span className="text-primary font-black uppercase tracking-widest text-sm mb-4 block">Our Community</span>
+        <section className="py-8 md:py-20 bg-white overflow-hidden">
+            <div className="container-custom">
+                <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 mb-8 md:mb-12">
+                    <div className="max-w-2xl text-center md:text-left">
+                        <Reveal width="100%">
+                            <span className="text-primary font-black uppercase tracking-widest text-xs md:text-sm mb-4 block">Our Community</span>
                         </Reveal>
                         <Reveal width="100%">
-                            <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight tracking-tight">Follow The <br />Adventure.</h2>
+                            <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-tight tracking-tight">Follow The <br className="hidden md:block" /> Adventure.</h2>
                         </Reveal>
                     </div>
                     <a
                         href="https://instagram.com"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-4 bg-slate-950 text-white px-8 py-5 rounded-3xl font-black text-xl hover:scale-105 hover:bg-slate-900 transition-all shadow-2xl h-fit"
+                        className="flex items-center gap-3 bg-slate-950 text-white px-6 py-4 md:px-8 md:py-5 rounded-2xl md:rounded-3xl font-black text-lg md:text-xl hover:scale-105 hover:bg-slate-900 transition-all shadow-2xl h-fit w-full md:w-auto justify-center"
                     >
-                        <Instagram className="w-8 h-8" />
+                        <Instagram className="w-6 h-6 md:w-8 md:h-8" />
                         @SafarChaska
                     </a>
                 </div>

@@ -89,7 +89,7 @@ const Packages = () => {
             <Navbar />
 
             {/* Header */}
-            <section className="relative pt-48 pb-32 bg-slate-900 text-center text-white overflow-hidden">
+            <section className="relative pt-32 pb-24 md:pt-48 md:pb-32 bg-slate-900 text-center text-white overflow-hidden">
                 <div className="container-custom relative z-10">
                     <Reveal center width="100%">
                         <h1 className="text-5xl md:text-8xl font-bold mb-6 tracking-tight drop-shadow-2xl text-white">
@@ -142,7 +142,7 @@ const Packages = () => {
             </section>
 
             {/* Listings */}
-            <section className="py-20">
+            <section className="py-8 md:py-20">
                 <div className="container-custom">
                     <AnimatePresence mode="wait">
                         {filteredPackages.length > 0 ? (

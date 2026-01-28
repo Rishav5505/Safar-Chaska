@@ -50,7 +50,7 @@ const packages = [
 
 const PopularPackages = () => {
     return (
-        <section className="py-24 bg-white">
+        <section className="py-8 md:py-24 bg-white">
             <div className="container-custom">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
                     <div className="text-center md:text-left">

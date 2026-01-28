@@ -57,12 +57,12 @@ const Chakrata = () => {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative h-[80vh] flex items-center justify-center overflow-hidden bg-slate-900">
+            <section className="relative min-h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden bg-slate-900 pt-40 md:pt-0">
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${chakrataData.images.hero})` }}>
                     <div className="absolute inset-0 bg-slate-900/40"></div>
                 </div>
 
-                <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto pt-20">
+                <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto md:pt-20">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -117,7 +117,7 @@ const Chakrata = () => {
             </section>
 
             {/* Quick Stats */}
-            <section className="py-20 bg-white">
+            <section className="py-8 md:py-20 bg-white">
                 <div className="container-custom">
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
                         {[
@@ -137,7 +137,7 @@ const Chakrata = () => {
             </section>
 
             {/* Package Summary */}
-            <section className="py-24 bg-white">
+            <section className="py-8 md:py-24 bg-white">
                 <div className="container-custom">
                     <div className="max-w-6xl mx-auto border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-sm flex flex-col lg:flex-row">
                         <div className="lg:w-7/12 p-12 lg:p-16">
@@ -182,7 +182,7 @@ const Chakrata = () => {
             </section>
 
             {/* Itinerary */}
-            <section id="itinerary" className="py-24 bg-slate-50">
+            <section id="itinerary" className="py-8 md:py-24 bg-slate-50">
                 <div className="container-custom">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl font-bold text-slate-900 tracking-tight">Your 4-Day Journey</h2>
@@ -214,7 +214,7 @@ const Chakrata = () => {
             </section>
 
             {/* Inclusions */}
-            <section className="py-24 bg-white">
+            <section className="py-8 md:py-24 bg-white">
                 <div className="container-custom">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
                         <div className="bg-slate-50 rounded-3xl p-10 border border-slate-100">
@@ -248,7 +248,7 @@ const Chakrata = () => {
             </section>
 
             {/* Booking */}
-            <section id="booking" className="py-24 bg-slate-900 text-white relative">
+            <section id="booking" className="py-8 md:py-24 bg-slate-900 text-white relative">
                 <div className="container-custom">
                     <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         <div>
