@@ -62,15 +62,30 @@ const PopularPackages = () => {
             try {
                 const { data } = await API.get('/packages');
                 if (data && data.length > 0) {
-                    // Map backend data to match frontend structure if needed
-                    const formattedData = data.map(pkg => ({
-                        ...pkg,
-                        price: pkg.price.toLocaleString(),
-                        rating: pkg.rating || "4.9",
-                        link: `/destination/${pkg._id}`,
-                        tag: pkg.isFeatured ? "Featured" : "New"
-                    }));
-                    setPackages(formattedData);
+                    // Filter only packages that should appear in Popular Escapes
+                    const popularPackageNames = [
+                        "Spiti Valley Circuit",
+                        "Manali Aurora",
+                        "Sikkim Explorer",
+                        "Kashmir Paradise"
+                    ];
+
+                    const filteredData = data
+                        .filter(pkg => popularPackageNames.includes(pkg.title))
+                        .map(pkg => ({
+                            ...pkg,
+                            price: pkg.price.toLocaleString(),
+                            rating: pkg.rating || "4.9",
+                            link: `/destination/${pkg._id}`,
+                            tag: pkg.isFeatured ? "Featured" : "Trending"
+                        }));
+
+                    // If we found matching packages, use them; otherwise use static
+                    if (filteredData.length > 0) {
+                        setPackages(filteredData);
+                    } else {
+                        setPackages(staticPackages);
+                    }
                 } else {
                     setPackages(staticPackages);
                 }
