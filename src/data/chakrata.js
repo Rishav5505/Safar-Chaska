@@ -1,3 +1,11 @@
+import heroImg from '../assets/IMG_2235.JPG.jpeg';
+import other1 from '../assets/IMG_2237.JPG.jpeg';
+import other2 from '../assets/IMG_2239.JPG.jpeg';
+import other3 from '../assets/IMG_3175.JPG.jpeg';
+import other4 from '../assets/IMG_5983.JPG.jpeg';
+import other5 from '../assets/IMG_7994.JPG.jpeg';
+import other6 from '../assets/IMG_8022.JPG.jpeg';
+
 export const chakrataData = {
     id: "chakrata",
     name: "Chakrata",
@@ -11,16 +19,17 @@ export const chakrataData = {
     winterTemp: "0°C to 10°C (Dec-Feb)",
 
     images: {
-        hero: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=1600",
+        hero: heroImg,
         others: [
-            "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=800",
-            "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800",
-            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=800",
-            "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800",
-            "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=800",
-            "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&q=80&w=800"
+            other1,
+            other2,
+            other3,
+            other4,
+            other5,
+            other6
         ]
     },
+
 
     packageHighlights: [
         { title: "Best Locations", desc: "Cover all major attractions" },

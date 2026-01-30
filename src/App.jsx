@@ -12,6 +12,14 @@ import { MessageCircle } from 'lucide-react';
 import Loader from './components/common/Loader';
 import ScrollToTop from './components/common/ScrollToTop';
 import BackToTop from './components/common/BackToTop';
+import { AuthProvider } from './context/AuthContext';
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminLayout from './components/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminPackages from './pages/admin/AdminPackages';
+import AddPackage from './pages/admin/AddPackage';
+import AdminBookings from './pages/admin/AdminBookings';
+import AdminSettings from './pages/admin/AdminSettings';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -25,40 +33,55 @@ const App = () => {
   }, []);
 
   return (
-    <Router>
-      <ScrollToTop />
-      <div className="antialiased text-slate-900 bg-white">
-        <AnimatePresence mode="wait">
-          {loading && <Loader key="loader" />}
-        </AnimatePresence>
+    <AuthProvider>
+      <Router>
+        <ScrollToTop />
+        <div className="antialiased text-slate-900 bg-white min-h-screen relative">
+          <AnimatePresence mode="wait">
+            {loading && <Loader key="loader" />}
+          </AnimatePresence>
 
-        {!loading && <BackToTop />}
+          {!loading && (
+            <>
+              <BackToTop />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/chakrata" element={<Chakrata />} />
+                <Route path="/destination/:id" element={<DestinationDetails />} />
+                <Route path="/booking" element={<Booking />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/packages" element={<Packages />} />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/chakrata" element={<Chakrata />} />
-          <Route path="/destination/:id" element={<DestinationDetails />} />
-          <Route path="/booking" element={<Booking />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/packages" element={<Packages />} />
-        </Routes>
+                {/* Admin Routes */}
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route path="dashboard" element={<AdminDashboard />} />
+                  <Route path="packages" element={<AdminPackages />} />
+                  <Route path="packages/add" element={<AddPackage />} />
+                  <Route path="bookings" element={<AdminBookings />} />
+                  <Route path="settings" element={<AdminSettings />} />
+                </Route>
+              </Routes>
 
-        {/* WhatsApp Float */}
-        <a
-          href="https://wa.me/918171379469"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:shadow-[#25D366]/40 hover:scale-105 transition-all group"
-          aria-label="Chat on WhatsApp"
-        >
-          <MessageCircle className="w-6 h-6" />
-          <span className="absolute right-full mr-4 bg-slate-900 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all whitespace-nowrap">
-            Support
-          </span>
-        </a>
-      </div>
-    </Router>
+              {/* WhatsApp Float */}
+              <a
+                href="https://wa.me/918171379469"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:shadow-[#25D366]/40 hover:scale-105 transition-all group"
+                aria-label="Chat on WhatsApp"
+              >
+                <MessageCircle className="w-6 h-6" />
+                <span className="absolute right-full mr-4 bg-slate-900 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all whitespace-nowrap">
+                  Support
+                </span>
+              </a>
+            </>
+          )}
+        </div>
+      </Router>
+    </AuthProvider>
   );
 };
 

@@ -93,7 +93,7 @@ const TravelQuiz = () => {
     };
 
     return (
-        <section className="py-12 md:py-24 bg-slate-50 relative">
+        <section className="pt-2 md:pt-4 pb-12 md:pb-20 bg-slate-50 relative">
             <div className="container-custom">
                 <AnimatePresence mode="wait">
                     {step === 'start' && (

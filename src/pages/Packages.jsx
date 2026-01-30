@@ -20,14 +20,14 @@ const allPackages = [
         category: "Adventure"
     },
     {
-        title: "Shimla Heritage",
+        title: "Spiti Valley Circuit",
         location: "Himachal Pradesh",
-        price: "6,499",
-        duration: "4D/3N",
-        rating: "4.8",
-        image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=800",
+        price: "21,999",
+        duration: "9D/8N",
+        rating: "4.9",
+        image: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&q=80&w=800",
         link: "/destination/shimla",
-        category: "Honeymoon"
+        category: "Adventure"
     },
     {
         title: "Manali Aurora",
@@ -68,6 +68,26 @@ const allPackages = [
         image: "/ladakh-hero.png",
         link: "/destination/ladakh",
         category: "Adventure"
+    },
+    {
+        title: "Kashmir Paradise",
+        location: "J&K",
+        price: "18,999",
+        duration: "8D/7N",
+        rating: "4.9",
+        image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800",
+        link: "/destination/kashmir",
+        category: "Honeymoon"
+    },
+    {
+        title: "Sikkim Explorer",
+        location: "Sikkim",
+        price: "24,999",
+        duration: "13D/12N",
+        rating: "5.0",
+        image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=800",
+        link: "/destination/sikkim",
+        category: "Culture"
     }
 ];
 

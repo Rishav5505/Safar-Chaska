@@ -1,58 +1,100 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Clock, Star, ArrowUpRight } from 'lucide-react';
+import { Clock, Star, ArrowUpRight, Loader } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Reveal from './Reveal';
 import Button from './Button';
 
-const packages = [
-    {
-        title: "Chakrata Bliss",
-        location: "Uttarakhand",
-        price: "4,999",
-        duration: "3D/2N",
-        rating: "4.9",
-        image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=800",
-        link: "/destination/chakrata",
-        tag: "Bestseller"
-    },
-    {
-        title: "Shimla Heritage",
-        location: "Himachal Pradesh",
-        price: "6,499",
-        duration: "4D/3N",
-        rating: "4.8",
-        image: "https://images.unsplash.com/photo-1563299796-17596ed6b017?auto=format&fit=crop&q=80&w=800",
-        link: "/destination/shimla",
-        tag: "Popular"
-    },
-    {
-        title: "Manali Aurora",
-        location: "Himachal Pradesh",
-        price: "8,999",
-        duration: "5D/4N",
-        rating: "5.0",
-        image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800",
-        link: "/destination/manali",
-        tag: "Premium"
-    },
-    {
-        title: "Leh Ladakh Expedition",
-        location: "Ladakh",
-        price: "14,999",
-        duration: "6D/5N",
-        rating: "5.0",
-        image: "/ladakh-hero.png",
-        link: "/destination/ladakh",
-        tag: "Dream Ride"
-    }
-];
+import API from '../../utils/api';
+
 
 const PopularPackages = () => {
+    const [packages, setPackages] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const staticPackages = [
+
+        {
+            title: "Spiti Valley Circuit",
+            location: "Himachal Pradesh",
+            price: "21,999",
+            duration: "9D/8N",
+            rating: "4.9",
+            image: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&q=80&w=800",
+            link: "/destination/shimla",
+            tag: "Trending"
+        },
+        {
+            title: "Manali Aurora",
+            location: "Himachal Pradesh",
+            price: "8,999",
+            duration: "5D/4N",
+            rating: "5.0",
+            image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800",
+            link: "/destination/manali",
+            tag: "Premium"
+        },
+        {
+            title: "Sikkim Explorer",
+            location: "Sikkim",
+            price: "24,999",
+            duration: "13D/12N",
+            rating: "5.0",
+            image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=800",
+            link: "/destination/sikkim",
+            tag: "Educational"
+        },
+        {
+            title: "Kashmir Paradise",
+            location: "J&K",
+            price: "18,999",
+            duration: "8D/7N",
+            rating: "4.9",
+            image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800",
+            link: "/destination/kashmir",
+            tag: "Bestseller"
+        }
+    ];
+
+
+    useEffect(() => {
+        const fetchPackages = async () => {
+            try {
+                const { data } = await API.get('/packages');
+                if (data && data.length > 0) {
+                    // Map backend data to match frontend structure if needed
+                    const formattedData = data.map(pkg => ({
+                        ...pkg,
+                        price: pkg.price.toLocaleString(),
+                        rating: pkg.rating || "4.9",
+                        link: `/destination/${pkg._id}`,
+                        tag: pkg.isFeatured ? "Featured" : "New"
+                    }));
+                    setPackages(formattedData);
+                } else {
+                    setPackages(staticPackages);
+                }
+            } catch (error) {
+                console.error("Failed to fetch packages", error);
+                setPackages(staticPackages);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchPackages();
+    }, []);
+
+    if (loading) return (
+        <div className="flex items-center justify-center py-24">
+            <Loader className="w-8 h-8 text-primary animate-spin" />
+        </div>
+    );
+
     return (
-        <section className="py-8 md:py-24 bg-white">
+        <section className="pt-4 md:pt-12 pb-8 md:pb-24 bg-white text-slate-900">
             <div className="container-custom">
-                <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-10">
+
                     <div className="text-center md:text-left">
                         <Reveal>
                             <h2 className="text-4xl font-bold text-slate-900 tracking-tight">Popular Escapes</h2>
@@ -73,7 +115,7 @@ const PopularPackages = () => {
                                     {pkg.tag}
                                 </div>
                             </div>
-                            <div className="p-8 flex-grow flex flex-col">
+                            <div className="p-8 flex-grow flex flex-col text-left">
                                 <div className="flex justify-between items-start mb-6">
                                     <div>
                                         <p className="text-primary font-bold uppercase text-[10px] tracking-widest mb-1">{pkg.location}</p>

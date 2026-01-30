@@ -18,14 +18,15 @@ const Newsletter = () => {
     };
 
     return (
-        <section className="py-8 md:py-24 bg-primary selection:text-primary selection:bg-white text-white">
+        <section className="pt-2 md:pt-4 pb-12 md:pb-24 bg-primary selection:text-primary selection:bg-white text-white">
             <div className="container-custom">
                 <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-12">
                     <div className="md:w-1/2 text-center md:text-left">
                         <Reveal>
-                            <h2 className="text-3xl font-bold mb-4 tracking-tight">Stay In The Loop</h2>
+                            <h2 className="text-3xl md:text-5xl font-black mb-4 tracking-tighter uppercase italic">Stay <span className="text-secondary">Wild.</span></h2>
                         </Reveal>
-                        <p className="text-white/80 leading-relaxed font-medium">Subscribe for monthly expedition updates, expert tips, and exclusive early access to new trails.</p>
+                        <p className="text-white/70 leading-relaxed font-light text-lg italic">Get exclusive trail maps and early-bird adventure deals directly in your inbox.</p>
+
                     </div>
 
                     <div className="md:w-1/2 w-full">

@@ -38,6 +38,12 @@ const Separator = ({ variant = 'wave', color = 'fill-white', flip = false, heigh
                     <path d="M0 0 L0 100 L200 40 L400 80 L600 20 L800 90 L1000 30 L1200 100 L1200 0 Z" transform="rotate(180 600 60)"></path>
                 </svg>
             )}
+            {variant === 'luxury' && (
+                <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className={`relative block w-full ${height} ${color}`}>
+                    <path d="M0,0 C150,110 350,0 600,110 C850,0 1050,110 1200,0 V120 H0 Z"></path>
+                </svg>
+            )}
+
         </div>
     );
 };

@@ -34,14 +34,16 @@ const Testimonials = () => {
     const prev = () => setIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
 
     return (
-        <section className="py-8 md:py-20 bg-white">
+        <section className="pt-2 md:pt-4 pb-12 md:pb-24 bg-white">
             <div className="container-custom">
-                <div className="text-center mb-10 md:mb-16">
+                <div className="text-center mb-6 md:mb-10">
                     <Reveal center>
-                        <h2 className="text-4xl font-bold text-slate-900 tracking-tight">Voices of the Mountains</h2>
+                        <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tighter mb-4">ECHOES OF <span className="text-primary italic">ADVENTURE</span></h2>
                     </Reveal>
-                    <p className="text-slate-500 mt-4">Real stories from our fellow travelers.</p>
+                    <p className="text-slate-500 mt-4 text-lg font-medium">Straight from the hearts of those who climbed with us.</p>
+
                 </div>
+
 
                 <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-16 bg-slate-50 rounded-[2.5rem] p-10 md:p-16 border border-slate-100">
                     <div className="w-48 h-48 md:w-64 md:h-64 rounded-3xl overflow-hidden shrink-0 shadow-lg">

@@ -26,15 +26,16 @@ const FAQ = () => {
     const [activeIndex, setActiveIndex] = useState(null);
 
     return (
-        <section className="py-8 md:py-24 bg-white relative">
+        <section className="pt-2 md:pt-4 pb-8 md:pb-20 bg-white relative">
             <div className="container-custom">
                 <div className="max-w-3xl mx-auto">
-                    <div className="text-center mb-8 md:mb-12">
+                    <div className="text-center mb-6 md:mb-10">
                         <Reveal center>
-                            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Commonly Asked</h2>
+                            <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tighter uppercase italic">The Trip <span className="text-secondary italic">Bible</span></h2>
                         </Reveal>
-                        <p className="text-slate-500 mt-2 text-sm">Everything you need to know before your trip.</p>
+                        <p className="text-slate-500 mt-2 text-sm md:text-base font-medium">Everything you need to know before your trip.</p>
                     </div>
+
 
                     <div className="space-y-3">
                         {faqs.map((faq, i) => (
@@ -59,7 +60,7 @@ const FAQ = () => {
                                             exit={{ height: 0, opacity: 0 }}
                                             className="overflow-hidden"
                                         >
-                                            <div className="p-6 pt-0 text-sm text-slate-400 font-medium leading-relaxed border-t border-white/5">
+                                            <div className="p-6 pt-0 text-sm text-slate-200 font-medium leading-relaxed border-t border-white/5">
                                                 {faq.answer}
                                             </div>
                                         </motion.div>

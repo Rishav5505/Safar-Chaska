@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Calendar, Clock, ArrowRight, Sun, Star, Car, Mountain, Heart, Zap, Shield, HelpCircle } from 'lucide-react';
+import { MapPin, Calendar, Clock, ArrowRight, Sun, Star, Car, Mountain, Heart, Zap, Shield, HelpCircle, FileText } from 'lucide-react';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import CTA from '../components/layout/CTA';
@@ -157,6 +157,26 @@ const DestinationDetails = () => {
                                     <Car className="w-4 h-4 text-blue-500" /> Private Transport
                                 </div>
                             </div>
+
+                            {/* PDF Brochure Button */}
+                            <a
+                                href={`/brochures/${id}.pdf`}
+                                download
+                                className="w-full h-12 mb-3 flex items-center justify-center gap-2 bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold rounded-xl transition-colors border-2 border-amber-200"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    const link = document.createElement('a');
+                                    link.href = `/brochures/${id}.pdf`;
+                                    link.target = '_blank';
+                                    link.rel = 'noopener noreferrer';
+                                    document.body.appendChild(link);
+                                    link.click();
+                                    document.body.removeChild(link);
+                                }}
+                            >
+                                <FileText className="w-5 h-5" />
+                                View Brochure (PDF)
+                            </a>
 
                             <Link to="/booking">
                                 <Button className="w-full h-14 rounded-xl font-bold text-lg">Book This Trip</Button>

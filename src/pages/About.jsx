@@ -7,6 +7,11 @@ import CTA from '../components/layout/CTA';
 import Reveal from '../components/common/Reveal';
 import Separator from '../components/common/Separator';
 
+// Import local images
+import aboutHeroImg from '../assets/IMG_8032.JPG.jpeg';
+import missionImg from '../assets/IMG_1481.JPG.jpeg';
+
+
 const About = () => {
     const stats = [
         { label: "Happy Travelers", value: "2,500+", icon: Users },
@@ -23,16 +28,19 @@ const About = () => {
             <section className="relative min-h-[50vh] md:h-[70vh] flex items-center justify-center overflow-hidden bg-slate-900 pt-40 md:pt-0">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=2000')` }}
+                    style={{ backgroundImage: `url(${aboutHeroImg})` }}
                 >
-                    <div className="absolute inset-0 bg-slate-900/60"></div>
+
+                    <div className="absolute inset-0 bg-slate-900/70"></div>
+
                 </div>
 
                 <div className="relative z-10 text-center text-white px-4 md:pt-20">
                     <Reveal center width="100%">
-                        <h1 className="text-5xl md:text-8xl font-bold mb-6 tracking-tight drop-shadow-2xl">
+                        <h1 className="text-5xl md:text-8xl font-black text-white mb-6 tracking-tight drop-shadow-2xl">
                             Our Story
                         </h1>
+
                     </Reveal>
                     <motion.div
                         initial={{ scaleX: 0 }}
@@ -68,10 +76,11 @@ const About = () => {
                         </div>
                         <div className="relative">
                             <img
-                                src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&q=80&w=1200"
+                                src={missionImg}
                                 alt="Mountain Expedition"
                                 className="rounded-3xl shadow-xl w-full aspect-[4/5] object-cover"
                             />
+
                             <div className="absolute -bottom-10 -left-10 bg-white p-8 rounded-2xl shadow-lg hidden xl:block border border-slate-100">
                                 <div className="flex items-center gap-4">
                                     <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">

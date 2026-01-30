@@ -1,38 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, Check, Users, Package, PhoneCall, ChevronLeft, ArrowRight, MapPin, CreditCard, Send } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Calendar, Check, Users, Package, PhoneCall, ChevronLeft, ArrowRight, MapPin, CreditCard, Send, Loader2 } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Button from '../components/common/Button';
+import API from '../utils/api';
 
 const Booking = () => {
+    const navigate = useNavigate();
     const [step, setStep] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [packages, setPackages] = useState([]);
     const [formData, setFormData] = useState({
-        destination: '',
-        package: '',
-        date: '',
+        packageId: '',
+        travelDate: '',
         guests: 1,
-        fullName: '',
+        userName: '',
         email: '',
         phone: '',
         specialRequests: ''
     });
 
-    const destinations = ['Chakrata', 'Mussoorie', 'Kanatal', 'Rishikesh'];
-    const packages = ['Budget Friendly', 'Premium Experience', 'Luxury Stay'];
+    useEffect(() => {
+        const fetchPackages = async () => {
+            try {
+                const { data } = await API.get('/packages');
+                setPackages(data);
+            } catch (error) {
+                console.error("Failed to fetch packages", error);
+            }
+        };
+        fetchPackages();
+    }, []);
 
-    const nextStep = () => setStep(step + 1);
+    const nextStep = (e) => {
+        if (e) e.preventDefault();
+        setStep(step + 1);
+    };
     const prevStep = () => setStep(step - 1);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const message = `Booking Inquiry for ${formData.destination} (${formData.package}). Name: ${formData.fullName}, Phone: ${formData.phone}, Guests: ${formData.guests}`;
-        window.open(`https://wa.me/918171379469?text=${encodeURIComponent(message)}`, '_blank');
+        setLoading(true);
+        try {
+            await API.post('/bookings', formData);
+
+            // Still opening WhatsApp for better conversion as requested before, but now data is saved in DB too
+            const selectedPackage = packages.find(p => p._id === formData.packageId);
+            const message = `Booking Inquiry for ${selectedPackage?.title}. Name: ${formData.userName}, Phone: ${formData.phone}, Guests: ${formData.guests}`;
+            window.open(`https://wa.me/918171379469?text=${encodeURIComponent(message)}`, '_blank');
+
+            alert('Booking request sent successfully!');
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+            alert('Failed to process booking');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -67,33 +97,26 @@ const Booking = () => {
                         <form onSubmit={handleSubmit} className="space-y-8">
                             {step === 1 && (
                                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
-                                    <h2 className="text-2xl font-bold text-slate-900 mb-8 pb-4 border-b">Select Your Destination</h2>
+                                    <h2 className="text-2xl font-bold text-slate-900 mb-8 pb-4 border-b">Select Your Experience</h2>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                        <div className="space-y-3">
-                                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Destination</label>
-                                            <select name="destination" value={formData.destination} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-primary font-medium">
-                                                <option value="">Select Location</option>
-                                                {destinations.map(d => <option key={d} value={d}>{d}</option>)}
-                                            </select>
-                                        </div>
-                                        <div className="space-y-3">
-                                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Package Type</label>
-                                            <select name="package" value={formData.package} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-primary font-medium">
-                                                <option value="">Select Package</option>
-                                                {packages.map(p => <option key={p} value={p}>{p}</option>)}
+                                        <div className="space-y-3 md:col-span-2">
+                                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Choose Package</label>
+                                            <select name="packageId" value={formData.packageId} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-primary font-medium" required>
+                                                <option value="">Select a journey</option>
+                                                {packages.map(p => <option key={p._id} value={p._id}>{p.title} - ₹{p.price}</option>)}
                                             </select>
                                         </div>
                                         <div className="space-y-3">
                                             <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Travel Date</label>
-                                            <input type="date" name="date" value={formData.date} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-primary font-medium text-sm" />
+                                            <input type="date" name="travelDate" value={formData.travelDate} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-primary font-medium text-sm" required />
                                         </div>
                                         <div className="space-y-3">
                                             <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Total Guests</label>
-                                            <input type="number" name="guests" min="1" value={formData.guests} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-primary font-medium" />
+                                            <input type="number" name="guests" min="1" value={formData.guests} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-primary font-medium" required />
                                         </div>
                                     </div>
                                     <div className="flex justify-end pt-6">
-                                        <Button onClick={nextStep} className="px-10 py-4 rounded-xl font-bold flex items-center gap-3">Continue <ArrowRight className="w-5 h-5" /></Button>
+                                        <Button onClick={nextStep} disabled={!formData.packageId || !formData.travelDate} className="px-10 py-4 rounded-xl font-bold flex items-center gap-3">Continue <ArrowRight className="w-5 h-5" /></Button>
                                     </div>
                                 </motion.div>
                             )}
@@ -104,26 +127,26 @@ const Booking = () => {
                                     <div className="grid grid-cols-1 gap-6">
                                         <div className="space-y-3">
                                             <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Full Name</label>
-                                            <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-primary font-medium" placeholder="John Doe" />
+                                            <input type="text" name="userName" value={formData.userName} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-primary font-medium" placeholder="Your Name" required />
                                         </div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div className="space-y-3">
                                                 <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Email ID</label>
-                                                <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-primary font-medium" placeholder="john@example.com" />
+                                                <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-primary font-medium" placeholder="email@example.com" required />
                                             </div>
                                             <div className="space-y-3">
                                                 <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Phone Number</label>
-                                                <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-primary font-medium" placeholder="+91 XXXX XXXX" />
+                                                <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-primary font-medium" placeholder="+91 XXXX XXXX" required />
                                             </div>
                                         </div>
                                         <div className="space-y-3">
                                             <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Special Requests</label>
-                                            <textarea name="specialRequests" rows="3" value={formData.specialRequests} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-primary font-medium resize-none" placeholder="Dietary needs, extra bed, etc."></textarea>
+                                            <textarea name="specialRequests" rows="3" value={formData.specialRequests} onChange={handleChange} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 focus:outline-none focus:border-primary font-medium resize-none" placeholder="Any special requirements?"></textarea>
                                         </div>
                                     </div>
                                     <div className="flex justify-between pt-6">
                                         <Button variant="outline" onClick={prevStep} className="px-8 py-4 rounded-xl font-bold flex items-center gap-3">Back</Button>
-                                        <Button onClick={nextStep} className="px-10 py-4 rounded-xl font-bold flex items-center gap-3">Continue <ArrowRight className="w-5 h-5" /></Button>
+                                        <Button onClick={nextStep} disabled={!formData.userName || !formData.email || !formData.phone} className="px-10 py-4 rounded-xl font-bold flex items-center gap-3">Continue <ArrowRight className="w-5 h-5" /></Button>
                                     </div>
                                 </motion.div>
                             )}
@@ -131,29 +154,31 @@ const Booking = () => {
                             {step === 3 && (
                                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
                                     <h2 className="text-2xl font-bold text-slate-900 mb-8 pb-4 border-b">Review & Confirm</h2>
-                                    <div className="bg-slate-50 rounded-2xl p-8 space-y-4">
+                                    <div className="bg-slate-50 rounded-2xl p-8 space-y-4 text-left">
                                         <div className="flex justify-between border-b border-slate-200 pb-4">
-                                            <span className="text-slate-400 font-medium">Trip To</span>
-                                            <span className="text-slate-900 font-bold">{formData.destination}</span>
+                                            <span className="text-slate-400 font-medium">Selected Journey</span>
+                                            <span className="text-slate-900 font-bold">{packages.find(p => p._id === formData.packageId)?.title}</span>
                                         </div>
                                         <div className="flex justify-between border-b border-slate-200 pb-4">
                                             <span className="text-slate-400 font-medium">Travel Date</span>
-                                            <span className="text-slate-900 font-bold">{formData.date || 'TBD'}</span>
+                                            <span className="text-slate-900 font-bold">{formData.travelDate || 'TBD'}</span>
                                         </div>
                                         <div className="flex justify-between border-b border-slate-200 pb-4">
                                             <span className="text-slate-400 font-medium">Party Size</span>
                                             <span className="text-slate-900 font-bold">{formData.guests} Guest(s)</span>
                                         </div>
                                         <div className="flex justify-between">
-                                            <span className="text-slate-400 font-medium">Contact</span>
+                                            <span className="text-slate-400 font-medium">Contact Details</span>
                                             <span className="text-slate-900 font-bold">{formData.phone}</span>
                                         </div>
                                     </div>
                                     <div className="flex justify-between pt-6">
                                         <Button variant="outline" onClick={prevStep} className="px-8 py-4 rounded-xl font-bold flex items-center gap-3">Back</Button>
-                                        <Button type="submit" className="px-12 py-4 rounded-xl font-bold flex items-center gap-3 shadow-lg shadow-primary/20">Send Inquiry <Send className="w-5 h-5" /></Button>
+                                        <Button type="submit" disabled={loading} className="px-12 py-4 rounded-xl font-bold flex items-center gap-3 shadow-lg shadow-primary/20 bg-primary text-white">
+                                            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Send className="w-5 h-5" /> Confirm & Book</>}
+                                        </Button>
                                     </div>
-                                    <p className="text-center text-xs text-slate-400">Total payable will be shared by our representative via WhatsApp.</p>
+                                    <p className="text-center text-xs text-slate-400">Your details will be saved and our team will contact you on WhatsApp.</p>
                                 </motion.div>
                             )}
                         </form>

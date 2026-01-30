@@ -58,68 +58,74 @@ export const destinationsData = {
     },
     shimla: {
         id: "shimla",
-        name: "Shimla",
-        title: "Shimla - The Queen of Hills",
+        name: "Spiti Valley",
+        title: "Spiti Valley Circuit - The Middle Land",
         state: "Himachal Pradesh",
-        tagline: "The Queen of Hills",
-        description: "Shimla, the capital of Himachal Pradesh, is the most popular hill station in Northern India. Known for its Victorian architecture, the Mall Road, and the historic toy train.",
-        altitude: "2,276 meters",
-        winterTemp: " -2°C to 8°C",
+        tagline: "Shimla - Kinnaur - Spiti - Manali",
+        description: "An epic 9-day road trip covering the best of Himachal Pradesh. Starting from the colonial charm of Shimla, traversing the rugged Kinnaur Valley, exploring the mystical Spiti Valley, and ending in the adventure hub of Manali.",
+        altitude: "4,270 meters",
+        winterTemp: "-20°C to 5°C",
         images: {
-            hero: "https://images.unsplash.com/photo-1563299796-17596ed6b017?auto=format&fit=crop&q=80&w=1600",
+            hero: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&q=80&w=1600",
         },
         packageSummary: {
-            duration: "4 Days / 3 Nights",
-            price: "6,499",
-            destinations: "The Ridge, Kufri, Mall Road",
+            duration: "9 Days / 8 Nights",
+            price: "21,999",
+            destinations: "Shimla, Kinnaur, Tabo, Kaza, Chandratal, Manali",
         },
         itinerary: [
-            { day: 1, title: "Shimla Arrival", desc: "Pickup from Chandigarh/Shimla. Evening walk at Mall Road & The Ridge." },
-            { day: 2, title: "Kufri Adventure", desc: "Visit Kufri, the adventure capital. Enjoy horse riding and snow sports." },
-            { day: 3, title: "Temple & Heritage Walk", desc: "Visit Jakhoo Temple and the Viceregal Lodge (Heritage museum)." },
-            { day: 4, title: "Departure", desc: "Toy train ride experience and drive back to Chandigarh." }
+            { day: 1, title: "Delhi - Shimla - Narkanda", desc: "Drive from Delhi to Shimla. Local sightseeing: The Ridge, Mall Road, Jakhu Temple. Drive to Narkanda. Overnight stay." },
+            { day: 2, title: "Narkanda - Sangla - Chitkul", desc: "Drive through the beautiful Kinnaur Valley. Visit Chitkul (Last village of India). Overnight stay in Sangla/Chitkul." },
+            { day: 3, title: "Sangla - Kalpa", desc: "Visit Kamru Fort. Drive to Kalpa. Enjoy sunset views of Mount Kinner Kailash. Overnight in Kalpa." },
+            { day: 4, title: "Kalpa - Nako - Tabo", desc: "Drive via Nako Lake & Geyu Village (Mummy). Enter Spiti Valley. Overnight in Tabo." },
+            { day: 5, title: "Tabo - Dhankar - Kaza", desc: "Visit Tabo Monastery, Dhankar Monastery. Proceed to Kaza. Check-in to Hotel/Homestay." },
+            { day: 6, title: "Kaza Local Sightseeing", desc: "Visit Hikkim (Highest Post Office), Komik (Highest Village), and Langza (Buddha Statue). Return to Kaza." },
+            { day: 7, title: "Kaza - Chandratal", desc: "Drive to Chandratal Lake via Kunzum Pass. Witness the color-changing lake. Overnight camping at Chandratal/Battal." },
+            { day: 8, title: "Chandratal - Manali", desc: "Drive to Manali via Atal Tunnel. Evening free for Mall Road exploration. Overnight in Manali." },
+            { day: 9, title: "Manali - Delhi", desc: "Morning breakfast. Departure for Delhi. Trip ends with lifetime memories." }
         ],
         packages: [
             {
                 id: 1,
-                name: "Heritage Package",
-                duration: "4D/3N",
-                price: 6499,
-                features: ["3-star Hotels", "Breakfast & Dinner", "Toy Train", "Tour Manager"]
+                name: "Spiti Circuit Expedition",
+                duration: "9D/8N",
+                price: 21999,
+                features: ["Hotels & Camps", "Breakfast & Dinner", "Tempo Traveller", "Experience Captain"]
             }
         ],
         inclusions: [
-            "3 nights accommodation in Shimla",
-            "Daily breakfast and dinner",
-            "Toy train experience",
-            "Sightseeing as per itinerary",
-            "All applicable taxes"
+            "Transport from Delhi to Delhi (Tempo Traveller/Volvo)",
+            "Accommodation on twin/triple sharing basis",
+            "Breakfast and Dinner during the trip",
+            "Driver charges, toll, parking",
+            "Inner Line Permits for Spiti Valley",
+            "Oxygen cylinder/First Aid kit"
         ],
         exclusions: [
-            "Transport to/from Chandigarh",
-            "Lunches during the tour",
-            "Entry fees to monuments",
-            "Personal expenses",
-            "Adventure activities cost"
+            "Lunch during the trip",
+            "Monastery/Monument entry fees",
+            "Any personal expenses",
+            "Heater charges",
+            "Travel Insurance"
         ],
         faqs: [
             {
-                question: "Is the toy train ride included?",
-                answer: "Yes, the iconic Kalka-Shimla toy train experience is included in the package."
+                question: "Is this trip suitable for beginners?",
+                answer: "This is a high-altitude road trip. Basic fitness is required. Consult doctor if you have breathing issues."
             },
             {
-                question: "Best time to visit Shimla?",
-                answer: "March to June for pleasant weather, December to February for snowfall."
+                question: "What is the best time for this circuit?",
+                answer: "June to September is the best time when all roads including Kunzum Pass and Chandratal are open."
             }
         ]
     },
     manali: {
         id: "manali",
         name: "Manali",
-        title: "Manali - Adventure Hub of Himalayas",
+        title: "Manali - The Valley of Gods",
         state: "Himachal Pradesh",
-        tagline: "Lovers Paradise - Adventure Hub",
-        description: "Nestled in the Beas River Valley, Manali is a gateway to adventure in the Himalayas. From skiing in Solang to trekking the Rohtang Pass, it's a dream for adrenaline junkies.",
+        tagline: "Snow, Mountains & Hippie Vibes",
+        description: "Experience the best of Himachal with a perfect blend of Manali's snow-capped peaks and Kasol's chill vibes. From the spiritual Manikaran to the adventurous Solang Valley, this trip covers it all.",
         altitude: "2,050 meters",
         winterTemp: "-5°C to 5°C",
         images: {
@@ -127,47 +133,48 @@ export const destinationsData = {
         },
         packageSummary: {
             duration: "5 Days / 4 Nights",
-            price: "8,999",
-            destinations: "Solang Valley, Rohtang, Hadimba Temple",
+            price: "6,999",
+            destinations: "Manali, Solang, Kasol, Manikaran",
         },
         itinerary: [
-            { day: 1, title: "Arrival & Local Sightseeing", desc: "Evening visit to Hadimba Devi Temple and old Manali cafes." },
-            { day: 2, title: "Solang Valley & Rohtang", desc: "Full day excursion to Solang Valley and Rohtang Pass (subject to permission)." },
-            { day: 3, title: "Kullu & Kasol Trip", desc: "Visit the Manikaran Sahib Gurudwara and Parvati Valley beauty." },
-            { day: 4, title: "Adventure Sports", desc: "Enjoy river rafting in Beas River and paragliding in Solang." },
-            { day: 5, title: "Departure", desc: "Morning shopping and transfer to Volvo bus station." }
+            { day: 1, title: "Departure from Delhi", desc: "Start journey from Delhi by AC Bus/Tempo Traveller in the evening. Dinner halt at Murthal (Self-paid). Overnight journey to Manali." },
+            { day: 2, title: "Manali Arrival & Sightseeing", desc: "Reach Manali & check-in to hotel. Visit Hadimba Temple, Manu Temple, Mall Road, Tibetan Monastery, and Van Vihar. Dinner (Veg) & Overnight stay with Bonfire at hotel." },
+            { day: 3, title: "Solang Valley & Rohtang", desc: "After breakfast, visit Solang Valley, Atal Tunnel & Sissu (if weather permits). Enjoy snow activities. Return to hotel for Dinner (Veg) & DJ Night Party." },
+            { day: 4, title: "Manali to Kasol", desc: "Morning breakfast & checkout at 11 AM. Drive to Kasol. Check-in to riverside camps. Enjoy mesmerizing mountain views, Bonfire & DJ Night. Dinner (Veg) at camp." },
+            { day: 5, title: "Manikaran & Departure", desc: "Visit Manikaran Sahib Gurudwara and hot springs. Local sightseeing in Kasol. Evening departure for Delhi. Overnight journey." }
         ],
         packages: [
             {
                 id: 1,
-                name: "Adventure Package",
+                name: "Manali Kasol Special",
                 duration: "5D/4N",
-                price: 8999,
-                features: ["3-star Hotels", "All Meals", "Adventure Activities", "Tour Manager"]
+                price: 6999,
+                features: ["Volvo/Tempo Traveller", "Hotels & Camps", "Breakfast & Dinner", "DJ Night & Bonfire"]
             }
         ],
         inclusions: [
-            "4 nights accommodation in Manali",
-            "Daily breakfast and dinner",
-            "Solang Valley visit with activities",
-            "Rohtang Pass excursion (subject to permit)",
-            "All transfers and sightseeing"
+            "Delhi - Manali - Delhi transportation by AC Volvo/Tempo Traveller",
+            "2 Nights stay in Manali Hotel",
+            "1 Night stay in Kasol Camp",
+            "3 Breakfasts & 3 Dinners (Veg)",
+            "Sightseeing as per itinerary",
+            "Bonfire & Music"
         ],
         exclusions: [
-            "Volvo bus tickets to/from Manali",
-            "Lunches during the tour",
-            "Rohtang Pass permit charges",
-            "Personal expenses",
-            "Additional adventure activities"
+            "Lunch during the tour",
+            "Any entry fees/monument charges",
+            "Adventure activities (Paragliding, Skiing, etc.)",
+            "Heater charges in hotel",
+            "Personal expenses"
         ],
         faqs: [
             {
-                question: "Is Rohtang Pass visit guaranteed?",
-                answer: "Rohtang Pass visit is subject to weather conditions and permit availability."
+                question: "Is Rohtang Pass included?",
+                answer: "Rohtang Pass visit depends on permit availability and weather conditions. Extra charges may apply for the permit."
             },
             {
-                question: "Are adventure activities included?",
-                answer: "Basic activities in Solang are included. Premium activities can be added at extra cost."
+                question: "What kind of vehicle is used?",
+                answer: "For Delhi transfers, we use AC Volvo or Tempo Traveller depending on group size. Local sightseeing is via private/shared cab."
             }
         ]
     },
@@ -232,11 +239,141 @@ export const destinationsData = {
             },
             {
                 question: "Do I need any permits?",
-                answer: "Inner Line Permits for Nubra Valley and Pangong Lake are included in the package. We handle all permit formalities."
+                answer: "Inner Line Permits for Nubra Valley and Pangong Lake are included. We handle all permit formalities."
             },
             {
                 question: "What about altitude sickness?",
                 answer: "We provide oxygen cylinders in vehicles. Drink plenty of water, avoid alcohol, and inform immediately if you feel unwell. Diamox tablets are recommended (consult your doctor)."
+            }
+        ]
+    },
+    kashmir: {
+        id: "kashmir",
+        name: "Kashmir",
+        title: "Kashmir - The Paradise on Earth",
+        state: "Jammu & Kashmir",
+        tagline: "Paradise on Earth",
+        description: "Experience the mesmerizing beauty of Kashmir with Safar Chaska. From the Dal Lake in Srinagar to the snow-capped peaks of Gulmarg and the lush valleys of Pahalgam, this journey is a glimpse of heaven.",
+        altitude: "1,585 meters",
+        winterTemp: "-2°C to 10°C",
+        images: {
+            hero: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=1600",
+        },
+        packageSummary: {
+            duration: "8 Days / 7 Nights",
+            price: "18,999",
+            destinations: "Srinagar, Gulmarg, Sonmarg, Pahalgam, Jammu",
+        },
+        itinerary: [
+            { day: 1, title: "Rajasthan to Jammu", desc: "Depart from Rajasthan at night. Start of an exciting overnight journey towards the mountains." },
+            { day: 2, title: "Jammu to Srinagar", desc: "Arrive in Jammu & proceed to Srinagar (approx 6 hours). Check-in at Hotel. Day free for rest and acclimatization." },
+            { day: 3, title: "Sonmarg Day Trip", desc: "After breakfast, full-day excursion to Sonmarg (Meadow of Gold, 2690 Mtrs). Visit the Thajiwas Glacier where snow remains round the year. Return to Srinagar Hotel." },
+            { day: 4, title: "Gulmarg Day Trip", desc: "Full day excursion to Gulmarg (Meadow of Flowers, 8700 ft). Enjoy the famous Gondola Ride (Asia's highest & longest cable car) to Kungdoor Station. Return to Srinagar." },
+            { day: 5, title: "Houseboat Stay", desc: "Check out from hotel & proceed for sightseeing. Local Srinagar tour of Mughal Gardens (Nishat, Shalimar), Cheshmashahi, Shankaracharya Temple. Check-in at Houseboat. Enjoy Shikara ride in the evening. Dinner & Overnight at Houseboat." },
+            { day: 6, title: "Srinagar to Pahalgam", desc: "Proceed to Pahalgam (Valley of Shepherds). Visit Avantipura ruins, Saffron fields. Explore trekking options like Lidderwat, Kolahoi Glacier. Dinner & Overnight stay at hotel in Pahalgam." },
+            { day: 7, title: "Pahalgam to Jammu-Rajasthan", desc: "After breakfast, check out from the hotel and proceed to Jammu railway station for the return journey to Rajasthan with lots of memories." },
+            { day: 8, title: "Reach Back Rajasthan", desc: "Reach back to Rajasthan with a bag full of beautiful memories." }
+        ],
+        packages: [
+            {
+                id: 1,
+                name: "Heavenly Kashmir",
+                duration: "8D/7N",
+                price: 18999,
+                features: ["3-star Hotels & Houseboat", "Breakfast & Dinner", "Shikara Ride", "DJ Night", "Lunch & Dinner Included"]
+            }
+        ],
+        inclusions: [
+            "Accommodation in comfortable Hotels/Houseboat",
+            "Daily Breakfast, Lunch & Dinner as per plan",
+            "All transfers and sightseeing by private vehicle",
+            "Shikara Ride on Dal Lake",
+            "DJ Night (Group Entertainment)",
+            "Toll taxes, parking and driver allowances"
+        ],
+        exclusions: [
+            "Train/Air fare to/from Rajasthan",
+            "Gondola Ride tickets at Gulmarg",
+            "Pony rides/Sledging",
+            "Entry fees to monuments and gardens",
+            "Personal expenses like laundry, tips",
+            "Any other item not mentioned in inclusions"
+        ],
+        faqs: [
+            {
+                question: "Is it safe to visit Kashmir?",
+                answer: "Yes, absolutely! Kashmir is one of the most hospitable places and is safe for tourists."
+            },
+            {
+                question: "What clothes should we carry?",
+                answer: "Carry heavy woolens for winter (Oct-Mar) and light woolens for summer evenings. Comfortable walking shoes are a must."
+            }
+        ]
+    },
+    sikkim: {
+        id: "sikkim",
+        name: "Sikkim & Darjeeling",
+        title: "Sikkim - Darjeeling Educational Tour",
+        state: "Sikkim & West Bengal",
+        tagline: "Nature: Educational Tour",
+        description: "A comprehensive 13-day journey including Train travel, covering the best of North East India. From the capital Gangtok to the snowy heights of Zero Point and the tea gardens of Darjeeling.",
+        altitude: "1,650 - 4,600 meters",
+        winterTemp: "-5°C to 15°C",
+        images: {
+            hero: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=1600",
+        },
+        packageSummary: {
+            duration: "13 Days / 12 Nights",
+            price: "24,999",
+            destinations: "Gangtok, Lachung, Yumthang, Pelling, Darjeeling",
+        },
+        itinerary: [
+            { day: 1, title: "Departure from Balotra", desc: "Departure from Balotra by train. Meals provided. Overnight journey." },
+            { day: 2, title: "Train Journey", desc: "Train journey continues. All meals provided in train." },
+            { day: 3, title: "Arrival at NJP / Bagdogra", desc: "Arrival at NJP. Transfer to Gangtok. Hotel check-in & rest." },
+            { day: 4, title: "Tsomgo Lake & Nathula", desc: "Excursion to Tsomgo Lake, Baba Mandir & Nathula Pass." },
+            { day: 5, title: "Gangtok to Lachung", desc: "Travel Gangtok to Lachung. Scenic mountain drive." },
+            { day: 6, title: "Yumthang Valley & Zero Point", desc: "Visit Yumthang Valley & Zero Point. Return to Lachung." },
+            { day: 7, title: "Lachung to Gangtok", desc: "Return from Lachung to Gangtok. Rest evening." },
+            { day: 8, title: "Gangtok to Pelling", desc: "Travel Gangtok to Pelling via Namchi (Chardham)." },
+            { day: 9, title: "Pelling Sightseeing", desc: "Pelling local sightseeing including Sky Walk. Overnight stay." },
+            { day: 10, title: "Pelling to Darjeeling", desc: "Transfer to Darjeeling. Evening free for Mall Road." },
+            { day: 11, title: "Darjeeling Sightseeing", desc: "Early morning Tiger Hill sunrise. Batasia Loop, Ghoom Monastery. Zoo & HMI." },
+            { day: 12, title: "Departure", desc: "Transfer to NJP Railway Station. Train journey starts." },
+            { day: 13, title: "Reach Home", desc: "Arrival at Balotra with sweet memories." }
+        ],
+        packages: [
+            {
+                id: 1,
+                name: "Sikkim Educational",
+                duration: "13D/12N",
+                price: 24999,
+                features: ["Train Journey", "All Meals (Train)", "3-Star Hotels", "Educational"]
+            }
+        ],
+        inclusions: [
+            "Train tickets (Sleeper Class)",
+            "Accommodation on triple sharing basis",
+            "All Meals (Breakfast, Lunch, Dinner)",
+            "All transfers and sightseeing by private vehicle",
+            "Nathula Pass Permit",
+            "Tour Manager assistance"
+        ],
+        exclusions: [
+            "Any personal expenses",
+            "Entry fees to monuments/parks",
+            "Extra meals or drinks",
+            "Gondola/Ropeway charges",
+            "Anything not mentioned in inclusions"
+        ],
+        faqs: [
+            {
+                question: "Is food included in train?",
+                answer: "Yes, all meals are provided during the train journey."
+            },
+            {
+                question: "Is this suitable for students?",
+                answer: "Yes, this is specially designed as an educational tour with safe and comfortable arrangements."
             }
         ]
     }

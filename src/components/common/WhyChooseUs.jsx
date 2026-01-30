@@ -76,9 +76,10 @@ const WhyChooseUs = () => {
     }, [selectedId]);
 
     return (
-        <section className="py-8 md:py-24 bg-slate-50 relative">
+        <section className="pt-2 md:pt-4 pb-8 md:pb-20 bg-slate-50 relative">
             <div className="container-custom">
-                <div className="text-center mb-10 md:mb-16">
+                <div className="text-center mb-6 md:mb-10">
+
                     <Reveal center>
                         <h2 className="text-4xl font-bold text-slate-900 tracking-tight">Why Travelers Trust Us</h2>
                     </Reveal>
