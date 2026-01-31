@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Lock, Mail, ArrowRight, Loader2 } from 'lucide-react';
+import { Lock, Mail, ArrowRight, Loader2, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
 
@@ -117,6 +117,12 @@ const AdminLogin = () => {
                         )}
                     </Button>
                 </form>
+
+                <div className="mt-8 pt-8 border-t border-slate-50 text-center">
+                    <Link to="/" className="inline-flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-primary transition-all">
+                        <ArrowLeft className="w-4 h-4" /> Back to Website
+                    </Link>
+                </div>
             </motion.div>
         </div>
     );
