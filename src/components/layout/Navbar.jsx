@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Sparkles, ArrowRight, User, ChevronRight } from 'lucide-react';
+import { Sparkles, ArrowRight, User, ChevronRight, Compass, Map, Info, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../common/Button';
 
@@ -32,17 +32,45 @@ const Navbar = () => {
     }, [location]);
 
     const navLinks = [
-        { name: 'Home', path: '/' },
-        { name: 'Packages', path: '/packages' },
-        { name: 'About', path: '/about' },
-        { name: 'Contact', path: '/contact' },
+        { name: 'Home', path: '/', icon: Compass, desc: 'Where the journey begins' },
+        { name: 'Packages', path: '/packages', icon: Map, desc: 'Explore mountain trails' },
+        { name: 'About', path: '/about', icon: Info, desc: 'Our story & mission' },
+        { name: 'Contact', path: '/contact', icon: Phone, desc: 'Get in touch with us' },
     ];
+
+    const menuVariants = {
+        closed: {
+            clipPath: "circle(0% at 90% 40px)",
+            transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 40,
+                staggerChildren: 0.1,
+                staggerDirection: -1
+            }
+        },
+        open: {
+            clipPath: "circle(150% at 90% 40px)",
+            transition: {
+                type: "spring",
+                stiffness: 20,
+                restDelta: 2,
+                staggerChildren: 0.1,
+                delayChildren: 0.2
+            }
+        }
+    };
+
+    const itemVariants = {
+        closed: { opacity: 0, y: 30, filter: 'blur(10px)' },
+        open: { opacity: 1, y: 0, filter: 'blur(0px)' }
+    };
 
     return (
         <header className="fixed top-0 w-full z-[100]">
             {/* Announcement Bar */}
             <AnimatePresence>
-                {!scrolled && (
+                {!scrolled && !isOpen && (
                     <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
@@ -61,7 +89,7 @@ const Navbar = () => {
             </AnimatePresence>
 
             {/* Main Navbar */}
-            <nav className={`transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-5 md:py-8'}`}>
+            <nav className={`transition-all duration-500 ${scrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-5 md:py-8'}`}>
                 <div className="container-custom flex items-center justify-between">
                     <Link to="/" className="flex items-center space-x-3 relative z-[110]">
                         <div className="w-10 h-10 rounded-lg overflow-hidden border border-white/10 shadow-lg">
@@ -71,7 +99,7 @@ const Navbar = () => {
                                 className="w-full h-full object-cover"
                             />
                         </div>
-                        <span className={`text-lg md:text-xl font-bold tracking-tight ${scrolled ? 'text-slate-900' : 'text-white'}`}>
+                        <span className={`text-lg md:text-xl font-bold tracking-tight ${scrolled || isOpen ? 'text-slate-900' : 'text-white'}`}>
                             Safar<span className="text-secondary">Chaska.</span>
                         </span>
                     </Link>
@@ -95,67 +123,108 @@ const Navbar = () => {
                         </Link>
                     </div>
 
-                    {/* Mobile Menu Button */}
-                    <button
-                        className={`lg:hidden p-2 rounded-xl transition-all relative z-[110] ${scrolled ? 'bg-slate-100 text-slate-900' : 'bg-white/10 text-white backdrop-blur-md border border-white/10'}`}
+                    {/* Mobile Menu Button - Premium Hamburger */}
+                    <motion.button
+                        whileTap={{ scale: 0.9 }}
+                        className={`lg:hidden w-12 h-12 rounded-xl flex flex-col items-center justify-center gap-1.5 transition-all relative z-[110] ${scrolled || isOpen ? 'bg-slate-900 text-white shadow-xl' : 'bg-white/10 text-white backdrop-blur-md border border-white/10'}`}
                         onClick={() => setIsOpen(!isOpen)}
                     >
-                        {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                    </button>
+                        <motion.span
+                            animate={isOpen ? { rotate: 45, y: 7, backgroundColor: '#fff' } : { rotate: 0, y: 0 }}
+                            className="w-6 h-0.5 bg-current rounded-full"
+                        />
+                        <motion.span
+                            animate={isOpen ? { opacity: 0, x: 20 } : { opacity: 1, x: 0 }}
+                            className="w-6 h-0.5 bg-current rounded-full"
+                        />
+                        <motion.span
+                            animate={isOpen ? { rotate: -45, y: -7, backgroundColor: '#fff' } : { rotate: 0, y: 0 }}
+                            className="w-6 h-0.5 bg-current rounded-full"
+                        />
+                    </motion.button>
                 </div>
 
-                {/* Mobile Drawer */}
+                {/* Ultra-Premium Mobile Menu */}
                 <AnimatePresence>
                     {isOpen && (
-                        <>
-                            {/* Backdrop Blur Overlay */}
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                onClick={() => setIsOpen(false)}
-                                className="fixed inset-0 bg-slate-900/40 backdrop-blur-md z-[100]"
-                            />
+                        <motion.div
+                            variants={menuVariants}
+                            initial="closed"
+                            animate="open"
+                            exit="closed"
+                            className="fixed inset-0 lg:hidden bg-white z-[105] flex flex-col overflow-hidden"
+                        >
+                            {/* Decorative Background Elements */}
+                            <div className="absolute top-0 right-0 w-full h-full opacity-[0.05] pointer-events-none">
+                                <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-primary rounded-full blur-[120px]" />
+                                <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-600 rounded-full blur-[120px]" />
+                            </div>
 
-                            {/* Drawer Slide-in from Right */}
-                            <motion.div
-                                initial={{ x: '100%' }}
-                                animate={{ x: 0 }}
-                                exit={{ x: '100%' }}
-                                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                                className="fixed top-0 right-0 h-full w-[300px] bg-white z-[105] shadow-2xl flex flex-col pt-24 p-8"
-                            >
-                                <div className="space-y-3 mt-10">
-                                    <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] mb-6 px-4">Navigation</p>
+                            <div className="relative z-10 flex flex-col h-full pt-32 p-8 overflow-y-auto">
+                                <motion.p
+                                    variants={itemVariants}
+                                    className="text-[10px] font-black text-primary uppercase tracking-[0.5em] mb-12 border-l-2 border-primary pl-4"
+                                >
+                                    Experience The Himalayas
+                                </motion.p>
+
+                                <div className="space-y-8">
                                     {navLinks.map((link) => (
-                                        <Link
-                                            key={link.name}
-                                            to={link.path}
-                                            className={`flex items-center justify-between py-4 px-6 rounded-2xl text-base font-semibold transition-all ${location.pathname === link.path ? 'bg-primary/5 text-primary' : 'text-slate-600 hover:bg-slate-50'}`}
-                                        >
-                                            {link.name}
-                                            <ChevronRight className={`w-4 h-4 ${location.pathname === link.path ? 'opacity-100' : 'opacity-20'}`} />
-                                        </Link>
+                                        <motion.div key={link.name} variants={itemVariants}>
+                                            <Link
+                                                to={link.path}
+                                                className="group block"
+                                            >
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-5">
+                                                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${location.pathname === link.path ? 'bg-primary text-white shadow-lg' : 'bg-slate-50 text-slate-400 group-hover:bg-slate-100 group-hover:text-primary'}`}>
+                                                            <link.icon className="w-5 h-5" />
+                                                        </div>
+                                                        <div>
+                                                            <h3 className={`text-2xl font-bold tracking-tight transition-colors ${location.pathname === link.path ? 'text-slate-900' : 'text-slate-600 group-hover:text-primary'}`}>
+                                                                {link.name}
+                                                            </h3>
+                                                            <p className="text-[10px] font-medium text-slate-400 mt-0.5">{link.desc}</p>
+                                                        </div>
+                                                    </div>
+                                                    <ChevronRight className={`w-5 h-5 transition-transform group-hover:translate-x-1 ${location.pathname === link.path ? 'text-primary' : 'text-slate-200 group-hover:text-primary'}`} />
+                                                </div>
+                                            </Link>
+                                        </motion.div>
                                     ))}
                                 </div>
 
-                                <div className="mt-auto pb-6 space-y-6">
-                                    <div className="pt-6 border-t border-slate-50">
-                                        <Link to="/booking">
-                                            <Button className="w-full py-4 rounded-xl font-bold uppercase tracking-widest text-[10px]">
-                                                Book The Adventure
-                                            </Button>
-                                        </Link>
+                                <motion.div variants={itemVariants} className="mt-auto pt-12 pb-6 space-y-8">
+                                    <div className="p-6 rounded-[2rem] bg-slate-900 text-white relative overflow-hidden group">
+                                        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/30 transition-colors" />
+                                        <div className="relative z-10">
+                                            <p className="text-[10px] font-bold text-primary uppercase tracking-widest mb-1">Adventure Awaits</p>
+                                            <h4 className="text-lg font-bold mb-4">Ready to start your journey?</h4>
+                                            <Link to="/booking">
+                                                <Button className="w-full py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] bg-primary hover:bg-white hover:text-primary transition-all shadow-xl">
+                                                    Plan My Trip Now
+                                                </Button>
+                                            </Link>
+                                        </div>
                                     </div>
-                                    <Link
-                                        to="/admin/login"
-                                        className="flex items-center justify-center gap-2 text-slate-400 font-bold text-[9px] uppercase tracking-widest hover:text-primary transition-colors"
-                                    >
-                                        <User className="w-3.5 h-3.5" /> Admin Login
-                                    </Link>
-                                </div>
-                            </motion.div>
-                        </>
+
+                                    <div className="flex items-center justify-between px-2">
+                                        <Link
+                                            to="/admin/login"
+                                            className="flex items-center gap-2 text-slate-400 font-bold text-[9px] uppercase tracking-widest hover:text-primary transition-colors"
+                                        >
+                                            <User className="w-3.5 h-3.5" /> Portal
+                                        </Link>
+                                        <div className="flex gap-4">
+                                            {[1, 2, 3].map((_, i) => (
+                                                <div key={i} className="w-1.5 h-1.5 rounded-full bg-slate-100" />
+                                            ))}
+                                        </div>
+                                        <span className="text-slate-300 font-bold text-[9px] uppercase tracking-widest italic">Est. 2024</span>
+                                    </div>
+                                </motion.div>
+                            </div>
+                        </motion.div>
                     )}
                 </AnimatePresence>
             </nav>
