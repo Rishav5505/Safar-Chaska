@@ -4,94 +4,33 @@ import { Clock, Star, ArrowUpRight, Loader } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Reveal from './Reveal';
 import Button from './Button';
-
 import API from '../../utils/api';
-
 
 const PopularPackages = () => {
     const [packages, setPackages] = useState([]);
     const [loading, setLoading] = useState(true);
-
-    const staticPackages = [
-
-        {
-            title: "Spiti Valley Circuit",
-            location: "Himachal Pradesh",
-            price: "21,999",
-            duration: "9D/8N",
-            rating: "4.9",
-            image: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&q=80&w=800",
-            link: "/destination/shimla",
-            tag: "Trending"
-        },
-        {
-            title: "Manali Aurora",
-            location: "Himachal Pradesh",
-            price: "8,999",
-            duration: "5D/4N",
-            rating: "5.0",
-            image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800",
-            link: "/destination/manali",
-            tag: "Premium"
-        },
-        {
-            title: "Sikkim Explorer",
-            location: "Sikkim",
-            price: "24,999",
-            duration: "13D/12N",
-            rating: "5.0",
-            image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=800",
-            link: "/destination/sikkim",
-            tag: "Educational"
-        },
-        {
-            title: "Kashmir Paradise",
-            location: "J&K",
-            price: "18,999",
-            duration: "8D/7N",
-            rating: "4.9",
-            image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800",
-            link: "/destination/kashmir",
-            tag: "Bestseller"
-        }
-    ];
-
 
     useEffect(() => {
         const fetchPackages = async () => {
             try {
                 const { data } = await API.get('/packages');
                 if (data && data.length > 0) {
-                    // Filter only packages that should appear in Popular Escapes
-                    const popularPackageNames = [
-                        "Spiti Valley Circuit",
-                        "Manali Aurora",
-                        "Sikkim Explorer",
-                        "Kashmir Paradise"
-                    ];
-
-                    const filteredData = data
-                        .filter(pkg => popularPackageNames.includes(pkg.title))
+                    // Show featured packages first, or just the first 4
+                    const sortedData = data
+                        .sort((a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0))
+                        .slice(0, 4)
                         .map(pkg => ({
                             ...pkg,
                             price: pkg.price.toLocaleString(),
                             rating: pkg.rating || "4.9",
                             link: `/destination/${pkg._id}`,
-                            tag: pkg.isFeatured ? "Featured" : "Trending"
+                            tag: pkg.tag || (pkg.isFeatured ? "Featured" : "Trending")
                         }));
 
-                    // If we found matching packages, use them; otherwise use static
-                    if (filteredData.length > 0) {
-                        setPackages(filteredData);
-                    } else {
-                        setPackages(staticPackages);
-                    }
-                } else {
-                    setPackages(staticPackages);
+                    setPackages(sortedData);
                 }
             } catch (error) {
                 console.error("Failed to fetch packages", error);
-                setPackages(staticPackages);
             } finally {
                 setLoading(false);
             }
@@ -105,13 +44,14 @@ const PopularPackages = () => {
         </div>
     );
 
+    if (packages.length === 0) return null;
+
     return (
         <section className="pt-4 md:pt-12 pb-8 md:pb-24 bg-white text-slate-900">
             <div className="container-custom">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-10">
-
                     <div className="text-center md:text-left">
-                        <Reveal>
+                        <Reveal center>
                             <h2 className="text-4xl font-bold text-slate-900 tracking-tight">Popular Escapes</h2>
                         </Reveal>
                         <p className="text-slate-500 mt-2">Handpicked journeys for every kind of traveler.</p>
@@ -123,7 +63,14 @@ const PopularPackages = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
                     {packages.map((pkg, i) => (
-                        <div key={i} className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 flex flex-col group">
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.1 }}
+                            className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 flex flex-col group"
+                        >
                             <div className="relative h-64 overflow-hidden">
                                 <img src={pkg.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={pkg.title} />
                                 <div className="absolute top-4 left-4 py-1.5 px-4 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-widest text-slate-900">
@@ -154,7 +101,7 @@ const PopularPackages = () => {
                                     </Button>
                                 </Link>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>

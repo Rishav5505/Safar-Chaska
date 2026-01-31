@@ -1,103 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, MapPin, Clock, Star, ArrowUpRight, Compass } from 'lucide-react';
+import { Search, MapPin, Clock, Star, ArrowUpRight, Loader } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
-import AnnouncementBar from '../components/layout/AnnouncementBar';
 import Button from '../components/common/Button';
 import Reveal from '../components/common/Reveal';
-
-const allPackages = [
-    {
-        title: "Chakrata Bliss",
-        location: "Uttarakhand",
-        price: "4,999",
-        duration: "3D/2N",
-        rating: "4.9",
-        image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=800",
-        link: "/destination/chakrata",
-        category: "Adventure"
-    },
-    {
-        title: "Spiti Valley Circuit",
-        location: "Himachal Pradesh",
-        price: "21,999",
-        duration: "9D/8N",
-        rating: "4.9",
-        image: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&q=80&w=800",
-        link: "/destination/shimla",
-        category: "Adventure"
-    },
-    {
-        title: "Manali Aurora",
-        location: "Himachal Pradesh",
-        price: "8,999",
-        duration: "5D/4N",
-        rating: "5.0",
-        image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
-        link: "/destination/manali",
-        category: "Adventure"
-    },
-    {
-        title: "Rishikesh Yoga Retreat",
-        location: "Uttarakhand",
-        price: "3,999",
-        duration: "3D/2N",
-        rating: "4.7",
-        image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=800",
-        link: "/destination/rishikesh",
-        category: "Wellness"
-    },
-    {
-        title: "Rajasthan Royale",
-        location: "Rajasthan",
-        price: "12,999",
-        duration: "6D/5N",
-        rating: "4.9",
-        image: "https://images.pexels.com/photos/3581368/pexels-photo-3581368.jpeg?auto=compress&cs=tinysrgb&w=800",
-        link: "/destination/rajasthan",
-        category: "Culture"
-    },
-    {
-        title: "Leh Ladakh Expedition",
-        location: "Ladakh",
-        price: "14,999",
-        duration: "6D/5N",
-        rating: "5.0",
-        image: "/ladakh-hero.png",
-        link: "/destination/ladakh",
-        category: "Adventure"
-    },
-    {
-        title: "Kashmir Paradise",
-        location: "J&K",
-        price: "18,999",
-        duration: "8D/7N",
-        rating: "4.9",
-        image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800",
-        link: "/destination/kashmir",
-        category: "Honeymoon"
-    },
-    {
-        title: "Sikkim Explorer",
-        location: "Sikkim",
-        price: "24,999",
-        duration: "13D/12N",
-        rating: "5.0",
-        image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=800",
-        link: "/destination/sikkim",
-        category: "Culture"
-    }
-];
+import API from '../utils/api';
 
 const Packages = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [activeCategory, setActiveCategory] = useState('All');
+    const [packages, setPackages] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchPackages = async () => {
+            try {
+                const { data } = await API.get('/packages');
+                setPackages(data);
+            } catch (error) {
+                console.error("Failed to fetch packages", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchPackages();
+    }, []);
 
     const categories = ['All', 'Adventure', 'Honeymoon', 'Culture', 'Wellness'];
 
-    const filteredPackages = allPackages.filter(pkg => {
+    const filteredPackages = packages.filter(pkg => {
         const matchesCategory = activeCategory === 'All' || pkg.category === activeCategory;
         const matchesSearch = pkg.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
             pkg.location.toLowerCase().includes(searchQuery.toLowerCase());
@@ -164,67 +97,73 @@ const Packages = () => {
             {/* Listings */}
             <section className="py-8 md:py-20">
                 <div className="container-custom">
-                    <AnimatePresence mode="wait">
-                        {filteredPackages.length > 0 ? (
-                            <motion.div
-                                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                            >
-                                {filteredPackages.map((pkg, i) => (
-                                    <motion.div
-                                        key={pkg.title}
-                                        className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 flex flex-col"
-                                    >
-                                        <div className="relative h-64 overflow-hidden">
-                                            <img src={pkg.image} className="w-full h-full object-cover" alt={pkg.title} />
-                                            <div className="absolute top-4 left-4 py-1.5 px-4 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-widest text-slate-900">
-                                                {pkg.category}
-                                            </div>
-                                        </div>
-                                        <div className="p-8 flex-grow flex flex-col">
-                                            <div className="flex justify-between items-start mb-6">
-                                                <div>
-                                                    <p className="text-primary font-bold uppercase text-[10px] tracking-widest mb-1 flex items-center gap-1">
-                                                        <MapPin className="w-3 h-3" /> {pkg.location}
-                                                    </p>
-                                                    <h3 className="text-2xl font-bold text-slate-900">{pkg.title}</h3>
-                                                </div>
-                                                <div className="text-right">
-                                                    <p className="text-2xl font-bold text-slate-900">₹{pkg.price}</p>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-center gap-6 py-4 border-y border-slate-50 mb-6 text-sm font-medium text-slate-500">
-                                                <div className="flex items-center gap-2">
-                                                    <Clock className="w-4 h-4 text-primary" /> {pkg.duration}
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <Star className="w-4 h-4 text-secondary fill-secondary" /> {pkg.rating}
-                                                </div>
-                                            </div>
-                                            <Link to={pkg.link} className="mt-auto">
-                                                <Button className="w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2">
-                                                    Explore Trip <ArrowUpRight className="w-4 h-4" />
-                                                </Button>
-                                            </Link>
-                                        </div>
-                                    </motion.div>
-                                ))}
-                            </motion.div>
-                        ) : (
-                            <div className="text-center py-40">
-                                <h3 className="text-2xl font-bold text-slate-900">No trails found.</h3>
-                                <p className="text-slate-500 mt-2">Try searching for something else.</p>
-                                <button
-                                    onClick={() => { setSearchQuery(''); setActiveCategory('All'); }}
-                                    className="mt-6 text-primary font-bold underline"
+                    {loading ? (
+                        <div className="flex items-center justify-center py-40">
+                            <Loader className="w-10 h-10 text-primary animate-spin" />
+                        </div>
+                    ) : (
+                        <AnimatePresence mode="wait">
+                            {filteredPackages.length > 0 ? (
+                                <motion.div
+                                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
                                 >
-                                    Reset Filters
-                                </button>
-                            </div>
-                        )}
-                    </AnimatePresence>
+                                    {filteredPackages.map((pkg, i) => (
+                                        <motion.div
+                                            key={pkg._id}
+                                            className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 flex flex-col"
+                                        >
+                                            <div className="relative h-64 overflow-hidden">
+                                                <img src={pkg.image} className="w-full h-full object-cover" alt={pkg.title} />
+                                                <div className="absolute top-4 left-4 py-1.5 px-4 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-widest text-slate-900">
+                                                    {pkg.category}
+                                                </div>
+                                            </div>
+                                            <div className="p-8 flex-grow flex flex-col">
+                                                <div className="flex justify-between items-start mb-6">
+                                                    <div>
+                                                        <p className="text-primary font-bold uppercase text-[10px] tracking-widest mb-1 flex items-center gap-1">
+                                                            <MapPin className="w-3 h-3" /> {pkg.location}
+                                                        </p>
+                                                        <h3 className="text-2xl font-bold text-slate-900">{pkg.title}</h3>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <p className="text-2xl font-bold text-slate-900">₹{pkg.price.toLocaleString()}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-6 py-4 border-y border-slate-50 mb-6 text-sm font-medium text-slate-500">
+                                                    <div className="flex items-center gap-2">
+                                                        <Clock className="w-4 h-4 text-primary" /> {pkg.duration}
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <Star className="w-4 h-4 text-secondary fill-secondary" /> {pkg.rating}
+                                                    </div>
+                                                </div>
+                                                <Link to={`/destination/${pkg._id}`} className="mt-auto">
+                                                    <Button className="w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2">
+                                                        Explore Trip <ArrowUpRight className="w-4 h-4" />
+                                                    </Button>
+                                                </Link>
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </motion.div>
+                            ) : (
+                                <div className="text-center py-40">
+                                    <h3 className="text-2xl font-bold text-slate-900">No trails found.</h3>
+                                    <p className="text-slate-500 mt-2">Try searching for something else.</p>
+                                    <button
+                                        onClick={() => { setSearchQuery(''); setActiveCategory('All'); }}
+                                        className="mt-6 text-primary font-bold underline"
+                                    >
+                                        Reset Filters
+                                    </button>
+                                </div>
+                            )}
+                        </AnimatePresence>
+                    )}
                 </div>
             </section>
 
