@@ -54,8 +54,8 @@ const AdminPackages = () => {
                 </Link>
             </div>
 
-            <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
-                <div className="p-8 border-b border-slate-50 flex flex-col md:flex-row gap-6 justify-between">
+            <div className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+                <div className="p-5 md:p-8 border-b border-slate-50 flex flex-col md:flex-row gap-6 justify-between">
                     <div className="relative flex-1 max-w-md">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                         <input
@@ -68,7 +68,7 @@ const AdminPackages = () => {
                     </div>
                 </div>
 
-                <div className="overflow-x-auto">
+                <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left">
                         <thead>
                             <tr className="bg-slate-50 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
@@ -121,22 +121,82 @@ const AdminPackages = () => {
                                         </div>
                                     </td>
                                     <td className="px-8 py-6 text-right">
-                                        <div className="flex items-center justify-end gap-2">
-                                            <button className="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all">
-                                                <Edit className="w-5 h-5" />
+                                        <div className="relative group/menu flex justify-end">
+                                            <button className="p-2 text-slate-400 hover:text-slate-900 bg-slate-50 rounded-lg transition-all peer">
+                                                <MoreVertical className="w-5 h-5" />
                                             </button>
-                                            <button
-                                                onClick={() => handleDelete(pkg._id)}
-                                                className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all"
-                                            >
-                                                <Trash2 className="w-5 h-5" />
-                                            </button>
+
+                                            {/* Beautiful Animated Dropdown */}
+                                            <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 z-20 opacity-0 invisible translate-y-2 group-hover/menu:opacity-100 group-hover/menu:visible group-hover/menu:translate-y-0 transition-all duration-300">
+                                                <button className="flex items-center gap-3 w-full px-4 py-3 hover:bg-slate-50 rounded-xl text-sm font-bold text-slate-700 transition-colors">
+                                                    <Edit className="w-4 h-4 text-primary" /> Edit Details
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(pkg._id)}
+                                                    className="flex items-center gap-3 w-full px-4 py-3 hover:bg-rose-50 rounded-xl text-sm font-bold text-rose-600 transition-colors"
+                                                >
+                                                    <Trash2 className="w-4 h-4" /> Delete Forever
+                                                </button>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
+                </div>
+
+                {/* Mobile View Card Layout */}
+                <div className="md:hidden divide-y divide-slate-50">
+                    {loading ? (
+                        <div className="p-10 text-center text-slate-400 italic">Synchronizing...</div>
+                    ) : filteredPackages.length === 0 ? (
+                        <div className="p-10 text-center text-slate-400 italic">No inventory found.</div>
+                    ) : filteredPackages.map((pkg) => (
+                        <div key={pkg._id} className="p-5 space-y-5">
+                            <div className="flex items-center gap-4">
+                                <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-sm shrink-0">
+                                    <img src={pkg.image} className="w-full h-full object-cover" alt="" />
+                                </div>
+                                <div className="min-w-0">
+                                    <p className="font-bold text-slate-900 leading-tight truncate">{pkg.title}</p>
+                                    <p className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-wider">{pkg.category}</p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-slate-50/50 p-3 rounded-xl border border-slate-100">
+                                    <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest mb-1">Price</p>
+                                    <p className="font-bold text-slate-900 flex items-center gap-1 text-sm">
+                                        <IndianRupee className="w-3 h-3 text-slate-400" /> {pkg.price.toLocaleString()}
+                                    </p>
+                                </div>
+                                <div className="bg-slate-50/50 p-3 rounded-xl border border-slate-100">
+                                    <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest mb-1">Duration</p>
+                                    <p className="font-bold text-slate-600 flex items-center gap-1 text-sm">
+                                        <Clock className="w-3 h-3 text-slate-400" /> {pkg.duration}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-between pt-2">
+                                <div className="flex items-center gap-2 text-slate-500 text-xs font-medium">
+                                    <MapPin className="w-3.5 h-3.5 text-primary/50" /> {pkg.location}
+                                </div>
+                                <div className="flex gap-2">
+                                    <button className="w-10 h-10 flex items-center justify-center text-slate-400 bg-slate-50 rounded-xl hover:text-primary transition-all">
+                                        <Edit className="w-4 h-4" />
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(pkg._id)}
+                                        className="w-10 h-10 flex items-center justify-center text-slate-400 bg-rose-50 rounded-xl hover:text-rose-500 transition-all"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

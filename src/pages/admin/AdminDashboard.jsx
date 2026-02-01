@@ -14,20 +14,20 @@ const StatCard = ({ label, value, icon: Icon, color, trend, onClick }) => (
         whileHover={{ y: -5 }}
         animate={{ opacity: 1, scale: 1 }}
         onClick={onClick}
-        className="bg-white p-7 rounded-[2.2rem] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] border border-slate-100 relative overflow-hidden group cursor-pointer"
+        className="bg-white p-4 md:p-7 rounded-[1.5rem] md:rounded-[2.2rem] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] border border-slate-100 relative overflow-hidden group cursor-pointer h-full"
     >
-        <div className={`absolute -right-4 -top-4 w-24 h-24 ${color.split(' ')[0]} opacity-10 rounded-full transition-transform group-hover:scale-150`} />
+        <div className={`absolute -right-4 -top-4 w-16 h-16 md:w-24 md:h-24 ${color.split(' ')[0]} opacity-10 rounded-full transition-transform group-hover:scale-150`} />
 
-        <div className={`w-12 h-12 ${color} rounded-2xl flex items-center justify-center mb-5 shadow-inner`}>
-            <Icon className="w-6 h-6" />
+        <div className={`w-10 h-10 md:w-12 md:h-12 ${color} rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-5 shadow-inner`}>
+            <Icon className="w-5 h-5 md:w-6 md:h-6" />
         </div>
 
-        <div className="relative z-10 font-bold text-slate-400 text-[10px] uppercase tracking-widest mb-1">{label}</div>
-        <div className="flex justify-between items-end relative z-10">
-            <h3 className="text-3xl font-black text-slate-900 tracking-tight">{value}</h3>
+        <div className="relative z-10 font-bold text-slate-400 text-[8px] md:text-[10px] uppercase tracking-widest mb-1">{label}</div>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end relative z-10 gap-2">
+            <h3 className="text-xl md:text-3xl font-black text-slate-900 tracking-tight">{value}</h3>
             {trend && (
-                <div className="flex items-center gap-1 text-emerald-500 bg-emerald-50 px-2 py-1 rounded-lg text-[10px] font-black">
-                    <ArrowUpRight className="w-3 h-3" />
+                <div className="flex items-center gap-1 text-emerald-500 bg-emerald-50 px-1.5 md:px-2 py-0.5 md:py-1 rounded-lg text-[8px] md:text-[10px] font-black whitespace-nowrap">
+                    <ArrowUpRight className="w-2 md:w-3 h-2 md:h-3" />
                     {trend}
                 </div>
             )}
@@ -95,18 +95,18 @@ const AdminDashboard = () => {
                 </div>
 
                 <div className="flex items-center gap-3 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
-                    <div className="px-5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 flex items-center gap-3">
+                    <div className="px-3 md:px-5 py-2 bg-slate-50 rounded-xl border border-slate-100 flex items-center gap-2 md:gap-3">
                         <div className="relative">
-                            <CloudSun className="w-5 h-5 text-amber-500" />
+                            <CloudSun className="w-4 h-4 md:w-5 md:h-5 text-amber-500" />
                             <motion.div
                                 animate={{ opacity: [0.5, 1, 0.5] }}
                                 transition={{ repeat: Infinity, duration: 2 }}
-                                className="absolute -top-1 -right-1 w-2 h-2 bg-amber-200 rounded-full"
+                                className="absolute -top-1 -right-1 w-1.5 h-1.5 md:w-2 md:h-2 bg-amber-200 rounded-full"
                             />
                         </div>
                         <div>
-                            <p className="text-[10px] font-black text-slate-400 uppercase leading-none mb-1">Chakrata</p>
-                            <p className="text-sm font-black text-slate-800">18°C Sunny</p>
+                            <p className="text-[8px] md:text-[10px] font-black text-slate-400 uppercase leading-none mb-0.5 md:mb-1">Chakrata</p>
+                            <p className="text-xs md:text-sm font-black text-slate-800">18°C</p>
                         </div>
                     </div>
 
@@ -121,7 +121,7 @@ const AdminDashboard = () => {
             </div>
 
             {/* Quick Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
                 <StatCard
                     label="Live Revenue"
                     value={`₹${stats.revenue.toLocaleString()}`}
@@ -159,30 +159,30 @@ const AdminDashboard = () => {
                 <div className="lg:col-span-8 space-y-10">
 
                     {/* Visual Analytics Chart & Live Traffic */}
-                    <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm overflow-hidden relative group">
-                        <div className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
+                    <div className="bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-slate-100 shadow-sm overflow-hidden relative group">
+                        <div className="flex flex-col sm:flex-row justify-between items-start mb-8 md:mb-12 gap-6">
                             <div>
-                                <h3 className="text-2xl font-black text-slate-900 tracking-tight">Revenue Analytics</h3>
-                                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Projected vs Actual growth</p>
+                                <h3 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">Revenue Analytics</h3>
+                                <p className="text-slate-400 text-[10px] md:text-xs font-bold uppercase tracking-widest mt-1">Projected vs Actual growth</p>
                             </div>
 
                             {/* Live Traffic Widget */}
-                            <div className="flex items-center gap-4 bg-slate-900 text-white px-6 py-3 rounded-2xl shadow-xl shadow-slate-900/10">
-                                <div className="p-2 bg-white/10 rounded-lg">
-                                    <Globe className="w-5 h-5 text-indigo-400 animate-spin-slow" />
+                            <div className="flex items-center gap-3 md:gap-4 bg-slate-900 text-white px-4 md:px-6 py-2.5 md:py-3 rounded-2xl shadow-xl shadow-slate-900/10">
+                                <div className="p-1.5 md:p-2 bg-white/10 rounded-lg">
+                                    <Globe className="w-4 h-4 md:w-5 md:h-5 text-indigo-400 animate-spin-slow" />
                                 </div>
                                 <div>
-                                    <p className="text-[10px] font-black text-indigo-300 uppercase leading-none mb-1">Live Visitors</p>
+                                    <p className="text-[8px] md:text-[10px] font-black text-indigo-300 uppercase leading-none mb-1">Live Visitors</p>
                                     <div className="flex items-center gap-2">
-                                        <h4 className="text-lg font-black">{liveVisitors}</h4>
-                                        <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+                                        <h4 className="text-sm md:text-lg font-black">{liveVisitors}</h4>
+                                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-emerald-400 rounded-full animate-pulse" />
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Modern Wave Chart simulation with SVG */}
-                        <div className="relative h-56 w-full px-2">
+                        <div className="relative h-40 md:h-56 w-full px-2">
                             <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 600 150">
                                 <defs>
                                     <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
@@ -210,37 +210,37 @@ const AdminDashboard = () => {
                                     filter="url(#shadow)"
                                 />
                                 {/* Dynamic data points */}
-                                <motion.circle cx="100" cy="90" r="6" fill="#4F46E5" stroke="white" strokeWidth="2" whileHover={{ r: 10 }} />
-                                <motion.circle cx="300" cy="110" r="6" fill="#4F46E5" stroke="white" strokeWidth="2" whileHover={{ r: 10 }} />
-                                <motion.circle cx="400" cy="30" r="10" fill="#4F46E5" stroke="white" strokeWidth="3" className="animate-pulse shadow-lg" />
+                                <motion.circle cx="100" cy="90" r="4" md:r="6" fill="#4F46E5" stroke="white" strokeWidth="2" whileHover={{ r: 10 }} />
+                                <motion.circle cx="300" cy="110" r="4" md:r="6" fill="#4F46E5" stroke="white" strokeWidth="2" whileHover={{ r: 10 }} />
+                                <motion.circle cx="400" cy="30" r="7" md:r="10" fill="#4F46E5" stroke="white" strokeWidth="3" className="animate-pulse shadow-lg" />
                             </svg>
                         </div>
 
-                        <div className="mt-10 pt-8 border-t border-slate-50 flex flex-wrap justify-between gap-6">
-                            <div className="flex items-center gap-10">
+                        <div className="mt-8 md:mt-10 pt-6 md:pt-8 border-t border-slate-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+                            <div className="flex items-center gap-6 md:gap-10">
                                 <div>
-                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Net Margin</p>
+                                    <p className="text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Net Margin</p>
                                     <div className="flex items-center gap-2">
-                                        <p className="font-black text-slate-900 text-lg">24.5%</p>
-                                        <span className="text-[10px] font-bold text-emerald-500">+2% pts</span>
+                                        <p className="font-black text-slate-900 text-base md:text-lg">24.5%</p>
+                                        <span className="text-[8px] md:text-[10px] font-bold text-emerald-500">+2% pts</span>
                                     </div>
                                 </div>
                                 <div>
-                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Drop-off Rate</p>
+                                    <p className="text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Drop-off Rate</p>
                                     <div className="flex items-center gap-2">
-                                        <p className="font-black text-slate-900 text-lg">4.2%</p>
-                                        <span className="text-[10px] font-bold text-rose-500">-1% pts</span>
+                                        <p className="font-black text-slate-900 text-base md:text-lg">4.2%</p>
+                                        <span className="text-[8px] md:text-[10px] font-bold text-rose-500">-1% pts</span>
                                     </div>
                                 </div>
                             </div>
-                            <button onClick={() => navigate('/admin/bookings')} className="flex items-center gap-2 bg-slate-50 hover:bg-slate-100 text-primary px-6 py-3 rounded-2xl font-black text-xs transition-all ring-1 ring-slate-100">
+                            <button onClick={() => navigate('/admin/bookings')} className="w-full sm:w-auto flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 text-primary px-5 md:px-6 py-3 rounded-xl md:rounded-2xl font-black text-[10px] md:text-xs transition-all ring-1 ring-slate-100">
                                 Export Full Report <TrendingUp className="w-4 h-4" />
                             </button>
                         </div>
                     </div>
 
                     {/* Bookings Feed */}
-                    <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm relative">
+                    <div className="bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-slate-100 shadow-sm relative">
                         <div className="flex justify-between items-center mb-10">
                             <h3 className="text-xl font-black text-slate-900 flex items-center gap-3">
                                 <Activity className="w-6 h-6 text-primary" /> Recent Reservations
@@ -264,20 +264,20 @@ const AdminDashboard = () => {
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: idx * 0.1 }}
                                         onClick={() => navigate('/admin/bookings')}
-                                        className="flex items-center justify-between p-6 bg-slate-50/50 rounded-[1.8rem] hover:bg-white hover:shadow-xl hover:shadow-slate-200/40 transition-all border border-transparent hover:border-slate-100 group cursor-pointer"
+                                        className="flex items-center justify-between p-4 md:p-6 bg-slate-50/50 rounded-[1.2rem] md:rounded-[1.8rem] hover:bg-white hover:shadow-xl hover:shadow-slate-200/40 transition-all border border-transparent hover:border-slate-100 group cursor-pointer"
                                     >
-                                        <div className="flex items-center gap-5">
-                                            <div className="relative">
-                                                <div className="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-black text-sm">
+                                        <div className="flex items-center gap-3 md:gap-5 overflow-hidden">
+                                            <div className="relative shrink-0">
+                                                <div className="w-10 h-10 md:w-12 md:h-12 bg-slate-900 text-white rounded-xl md:rounded-2xl flex items-center justify-center font-black text-xs md:text-sm">
                                                     {booking.userName[0]}
                                                 </div>
-                                                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center">
-                                                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
+                                                <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 md:w-5 md:h-5 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center">
+                                                    <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-white rounded-full animate-ping" />
                                                 </div>
                                             </div>
-                                            <div>
-                                                <p className="font-bold text-slate-900 group-hover:text-primary transition-colors">{booking.userName}</p>
-                                                <p className="text-[10px] font-bold text-slate-400 flex items-center gap-1 mt-0.5 uppercase tracking-wider">
+                                            <div className="min-w-0">
+                                                <p className="font-bold text-slate-900 group-hover:text-primary transition-colors truncate text-sm md:text-base">{booking.userName}</p>
+                                                <p className="text-[8px] md:text-[10px] font-bold text-slate-400 flex items-center gap-1 mt-0.5 uppercase tracking-wider truncate">
                                                     {booking.packageId?.title || 'Private Journey'}
                                                 </p>
                                             </div>
@@ -302,7 +302,7 @@ const AdminDashboard = () => {
                 <div className="lg:col-span-4 space-y-10">
 
                     {/* Marketing Campaign Center */}
-                    <div className="bg-slate-900 p-10 rounded-[3rem] shadow-2xl shadow-indigo-200/50 text-white relative overflow-hidden group">
+                    <div className="bg-slate-900 p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] shadow-2xl shadow-indigo-200/50 text-white relative overflow-hidden group">
                         <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-500/10 rounded-bl-full transform translate-x-10 -translate-y-10 group-hover:scale-110 transition-transform" />
 
                         <div className="flex items-center gap-3 mb-8">
@@ -342,45 +342,45 @@ const AdminDashboard = () => {
                     </div>
 
                     {/* Operational Console (Quick Actions) */}
-                    <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm">
+                    <div className="bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-slate-100 shadow-sm">
                         <h4 className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 mb-8 pb-4 border-b border-slate-50">Operational Hub</h4>
 
                         <div className="grid grid-cols-2 gap-4">
                             <button
                                 onClick={() => navigate('/admin/packages/add')}
-                                className="p-6 bg-slate-50 rounded-[2rem] flex flex-col items-center gap-3 hover:bg-slate-900 hover:text-white transition-all group shadow-sm active:scale-95"
+                                className="p-4 md:p-6 bg-slate-50 rounded-2xl md:rounded-[2rem] flex flex-col items-center gap-2 md:gap-3 hover:bg-slate-900 hover:text-white transition-all group shadow-sm active:scale-95"
                             >
-                                <div className="p-3 bg-white rounded-xl group-hover:bg-white/10 transition-colors">
-                                    <Plus className="w-5 h-5 text-indigo-600 group-hover:text-white" />
+                                <div className="p-2 md:p-3 bg-white rounded-xl group-hover:bg-white/10 transition-colors">
+                                    <Plus className="w-4 h-4 md:w-5 md:h-5 text-indigo-600 group-hover:text-white" />
                                 </div>
-                                <span className="text-[10px] font-black uppercase tracking-[0.1em]">New Package</span>
+                                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.1em]">New Package</span>
                             </button>
                             <button
                                 onClick={() => navigate('/admin/packages')}
-                                className="p-6 bg-slate-50 rounded-[2rem] flex flex-col items-center gap-3 hover:bg-slate-900 hover:text-white transition-all group shadow-sm active:scale-95"
+                                className="p-4 md:p-6 bg-slate-50 rounded-2xl md:rounded-[2rem] flex flex-col items-center gap-2 md:gap-3 hover:bg-slate-900 hover:text-white transition-all group shadow-sm active:scale-95"
                             >
-                                <div className="p-3 bg-white rounded-xl group-hover:bg-white/10 transition-colors">
-                                    <Map className="w-5 h-5 text-emerald-500 group-hover:text-white" />
+                                <div className="p-2 md:p-3 bg-white rounded-xl group-hover:bg-white/10 transition-colors">
+                                    <Map className="w-4 h-4 md:w-5 md:h-5 text-emerald-500 group-hover:text-white" />
                                 </div>
-                                <span className="text-[10px] font-black uppercase tracking-[0.1em]">Inventory</span>
+                                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.1em]">Inventory</span>
                             </button>
                             <button
                                 onClick={() => navigate('/admin/bookings')}
-                                className="p-6 bg-slate-50 rounded-[2rem] flex flex-col items-center gap-3 hover:bg-slate-900 hover:text-white transition-all group shadow-sm active:scale-95"
+                                className="p-4 md:p-6 bg-slate-50 rounded-2xl md:rounded-[2rem] flex flex-col items-center gap-2 md:gap-3 hover:bg-slate-900 hover:text-white transition-all group shadow-sm active:scale-95"
                             >
-                                <div className="p-3 bg-white rounded-xl group-hover:bg-white/10 transition-colors">
-                                    <MousePointer2 className="w-5 h-5 text-indigo-500 group-hover:text-white" />
+                                <div className="p-2 md:p-3 bg-white rounded-xl group-hover:bg-white/10 transition-colors">
+                                    <MousePointer2 className="w-4 h-4 md:w-5 md:h-5 text-indigo-500 group-hover:text-white" />
                                 </div>
-                                <span className="text-[10px] font-black uppercase tracking-[0.1em]">Review</span>
+                                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.1em]">Review</span>
                             </button>
                             <button
                                 onClick={() => navigate('/admin/settings')}
-                                className="p-6 bg-slate-50 rounded-[2rem] flex flex-col items-center gap-3 hover:bg-slate-900 hover:text-white transition-all group shadow-sm active:scale-95"
+                                className="p-4 md:p-6 bg-slate-50 rounded-2xl md:rounded-[2rem] flex flex-col items-center gap-2 md:gap-3 hover:bg-slate-900 hover:text-white transition-all group shadow-sm active:scale-95"
                             >
-                                <div className="p-3 bg-white rounded-xl group-hover:bg-white/10 transition-colors">
-                                    <Zap className="w-5 h-5 text-amber-500 group-hover:text-white" />
+                                <div className="p-2 md:p-3 bg-white rounded-xl group-hover:bg-white/10 transition-colors">
+                                    <Zap className="w-4 h-4 md:w-5 md:h-5 text-amber-500 group-hover:text-white" />
                                 </div>
-                                <span className="text-[10px] font-black uppercase tracking-[0.1em]">Settings</span>
+                                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.1em]">Settings</span>
                             </button>
                         </div>
                     </div>

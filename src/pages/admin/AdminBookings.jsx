@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, User, Phone, Mail, Clock, CheckCircle, XCircle, AlertCircle, Search, Filter, MoreVertical, ExternalLink } from 'lucide-react';
+import { Search, Calendar, Clock, User, Mail, Phone, TrendingUp, CheckCircle, XCircle, ExternalLink, MoreVertical } from 'lucide-react';
 import API from '../../utils/api';
 
 const AdminBookings = () => {
@@ -82,28 +82,30 @@ const AdminBookings = () => {
             </div>
 
             {/* Filters Bar */}
-            <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex flex-col md:flex-row gap-6 items-center">
-                <div className="relative flex-1 w-full">
-                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300" />
-                    <input
-                        type="text"
-                        placeholder="Search by name, email or package..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-slate-50 border-none rounded-2xl py-4 pl-14 pr-6 focus:ring-2 focus:ring-primary/20 transition-all font-medium text-slate-700"
-                    />
-                </div>
-                <div className="flex gap-2 p-1 bg-slate-100 rounded-2xl">
-                    {['all', 'pending', 'confirmed', 'cancelled'].map(f => (
-                        <button
-                            key={f}
-                            onClick={() => setStatusFilter(f)}
-                            className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${statusFilter === f ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'
-                                }`}
-                        >
-                            {f}
-                        </button>
-                    ))}
+            <div className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+                <div className="p-5 md:p-8 border-b border-slate-50 flex flex-col md:flex-row gap-6 justify-between">
+                    <div className="relative flex-1 w-full">
+                        <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300" />
+                        <input
+                            type="text"
+                            placeholder="Search by name, email or package..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full bg-slate-50 border-none rounded-2xl py-4 pl-14 pr-6 focus:ring-2 focus:ring-primary/20 transition-all font-medium text-slate-700"
+                        />
+                    </div>
+                    <div className="flex gap-2 p-1 bg-slate-100 rounded-2xl">
+                        {['all', 'pending', 'confirmed', 'cancelled'].map(f => (
+                            <button
+                                key={f}
+                                onClick={() => setStatusFilter(f)}
+                                className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${statusFilter === f ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'
+                                    }`}
+                            >
+                                {f}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </div>
 
@@ -128,7 +130,7 @@ const AdminBookings = () => {
                                 exit={{ opacity: 0, scale: 0.95 }}
                                 transition={{ delay: idx * 0.05 }}
                                 key={booking._id}
-                                className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all group"
+                                className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-5 md:p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all group"
                             >
                                 <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
                                     {/* Left: Traveler Info */}
@@ -152,7 +154,7 @@ const AdminBookings = () => {
                                     </div>
 
                                     {/* Middle: Journey Info */}
-                                    <div className="flex-1 px-8 border-x border-slate-50 py-2">
+                                    <div className="flex-1 lg:px-8 lg:border-x border-slate-50 py-2 w-full lg:w-auto">
                                         <div className="flex flex-col gap-3">
                                             <div className="flex items-center gap-3">
                                                 <div className="p-2 bg-primary/10 rounded-lg">
@@ -182,36 +184,58 @@ const AdminBookings = () => {
                                             {booking.status}
                                         </span>
 
-                                        <div className="flex items-center gap-2">
-                                            {booking.status === 'pending' && (
-                                                <>
-                                                    <button
-                                                        onClick={() => handleUpdateStatus(booking._id, 'confirmed')}
-                                                        disabled={updatingId === booking._id}
-                                                        className="px-4 py-2.5 bg-emerald-500 text-white rounded-xl text-xs font-black shadow-lg shadow-emerald-500/20 hover:bg-emerald-600 transition-all disabled:opacity-50"
-                                                    >
-                                                        Confirm
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleUpdateStatus(booking._id, 'cancelled')}
-                                                        disabled={updatingId === booking._id}
-                                                        className="px-4 py-2.5 bg-white border border-rose-100 text-rose-500 rounded-xl text-xs font-black hover:bg-rose-50 transition-all disabled:opacity-50"
-                                                    >
-                                                        Cancel
-                                                    </button>
-                                                </>
-                                            )}
-                                            {booking.status !== 'pending' && (
-                                                <button
-                                                    onClick={() => handleUpdateStatus(booking._id, 'pending')}
-                                                    className="px-4 py-2.5 text-slate-400 hover:text-slate-600 text-xs font-bold"
-                                                >
-                                                    Revert to Pending
-                                                </button>
-                                            )}
-                                            <button className="p-3 bg-slate-50 text-slate-400 rounded-xl hover:bg-slate-100 transition-all">
-                                                <ExternalLink className="w-4 h-4" />
+                                        <div className="relative group/menu flex justify-end">
+                                            <button className="p-3 bg-slate-50 text-slate-400 rounded-xl hover:text-slate-900 transition-all">
+                                                <MoreVertical className="w-5 h-5" />
                                             </button>
+
+                                            {/* Animated Action Dropdown */}
+                                            <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 z-20 opacity-0 invisible translate-y-3 group-hover/menu:opacity-100 group-hover/menu:visible group-hover/menu:translate-y-0 transition-all duration-300">
+                                                <div className="px-4 py-2 mb-1 border-b border-slate-50">
+                                                    <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Manage Status</p>
+                                                </div>
+
+                                                {booking.status === 'pending' ? (
+                                                    <div className="space-y-1">
+                                                        <button
+                                                            onClick={() => handleUpdateStatus(booking._id, 'confirmed')}
+                                                            disabled={updatingId === booking._id}
+                                                            className="flex items-center gap-3 w-full px-4 py-3 hover:bg-emerald-50 rounded-xl text-sm font-bold text-emerald-600 transition-colors"
+                                                        >
+                                                            <motion.div whileHover={{ scale: 1.2 }} className="w-6 h-6 bg-emerald-100 rounded-lg flex items-center justify-center">
+                                                                <TrendingUp className="w-3.5 h-3.5" />
+                                                            </motion.div>
+                                                            Approve Booking
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleUpdateStatus(booking._id, 'cancelled')}
+                                                            disabled={updatingId === booking._id}
+                                                            className="flex items-center gap-3 w-full px-4 py-3 hover:bg-rose-50 rounded-xl text-sm font-bold text-rose-600 transition-colors"
+                                                        >
+                                                            <motion.div whileHover={{ scale: 1.2 }} className="w-6 h-6 bg-rose-100 rounded-lg flex items-center justify-center">
+                                                                <XCircle className="w-3.5 h-3.5" />
+                                                            </motion.div>
+                                                            Reject Booking
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <button
+                                                        onClick={() => handleUpdateStatus(booking._id, 'pending')}
+                                                        className="flex items-center gap-3 w-full px-4 py-3 hover:bg-slate-50 rounded-xl text-sm font-bold text-slate-600 transition-colors"
+                                                    >
+                                                        <motion.div whileHover={{ scale: 1.2 }} className="w-6 h-6 bg-slate-100 rounded-lg flex items-center justify-center">
+                                                            <Clock className="w-3.5 h-3.5" />
+                                                        </motion.div>
+                                                        Revert to Pending
+                                                    </button>
+                                                )}
+
+                                                <div className="mt-1 pt-1 border-t border-slate-50">
+                                                    <button className="flex items-center gap-3 w-full px-4 py-3 hover:bg-slate-50 rounded-xl text-sm font-bold text-slate-700 transition-colors">
+                                                        <ExternalLink className="w-4 h-4 opacity-40" /> View Details
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
