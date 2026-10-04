@@ -188,7 +188,7 @@ export const destinationsData = {
         altitude: "3,524 meters",
         winterTemp: "-20°C to -5°C",
         images: {
-            hero: "/ladakh-hero.png",
+            hero: "/ladakh-hero.webp",
         },
         packageSummary: {
             duration: "6 Days / 5 Nights",

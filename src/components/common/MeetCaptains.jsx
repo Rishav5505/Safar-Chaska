@@ -1,14 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Instagram, Star, Award, Compass } from 'lucide-react';
-import Reveal from './Reveal';
+import { Instagram, Compass } from 'lucide-react';
+import SectionHeader from './SectionHeader';
+
+const ease = [0.22, 1, 0.36, 1];
 
 const captains = [
     {
         name: "Jaspal Rana",
         role: "Founder & Captain",
         exp: "Founder",
-        img: "/cap-jaspal.jpg",
+        img: "/cap-jaspal.webp",
         specialty: "High Altitude Leadership",
         insta: "#"
     },
@@ -16,7 +18,7 @@ const captains = [
         name: "Rishav",
         role: "Captain",
         exp: "8+ Years",
-        img: "/cap-rishav.jpg",
+        img: "/cap-rishav.webp",
         specialty: "Expedition Planning",
         insta: "#"
     },
@@ -24,7 +26,7 @@ const captains = [
         name: "Vinay Badnoriya",
         role: "Expert Trek Leader",
         exp: "6+ Years",
-        img: "/cap-vinay.png",
+        img: "/cap-vinay.webp",
         specialty: "Mountain Safety Specialist",
         insta: "#"
     }
@@ -32,62 +34,55 @@ const captains = [
 
 const MeetCaptains = () => {
     return (
-        <section className="py-8 md:py-24 bg-slate-900 text-white">
+        <section className="py-16 md:py-28 bg-sand">
             <div className="container-custom">
-                <div className="text-center mb-10 md:mb-16">
-                    <Reveal center>
-                        <h2 className="text-4xl font-bold text-white tracking-tight">Meet Your Captains</h2>
-                    </Reveal>
-                    <p className="text-slate-400 mt-4 max-w-2xl mx-auto">Led by certified mountain professionals who know these trails by heart.</p>
-                </div>
+                <SectionHeader
+                    center
+                    eyebrow="The People"
+                    title={<>Meet your <em>captains</em></>}
+                    subtitle="Led by certified mountain professionals who know these trails by heart."
+                />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 text-center">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     {captains.map((cap, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 50 }}
+                        <motion.article
+                            key={cap.name}
+                            initial={{ opacity: 0, y: 24 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-100px" }}
-                            transition={{ duration: 1.2, delay: i * 0.2, ease: "easeOut" }}
-                            className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden group hover:border-primary/50 transition-colors"
+                            viewport={{ once: true, margin: "-60px" }}
+                            transition={{ duration: 0.9, delay: i * 0.1, ease }}
+                            className={`group ${i === 1 ? 'lg:mt-12' : ''}`}
                         >
-                            <div className="relative h-[380px] overflow-hidden">
-                                <img src={cap.img} className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110" alt={cap.name} />
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/30 to-transparent"></div>
-                                <div className="absolute bottom-6 left-0 right-0 px-8">
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: (i * 0.2) + 0.5 }}
-                                        className="flex items-center justify-center gap-2 text-secondary mb-2"
-                                    >
-                                        <Award className="w-4 h-4" />
-                                        <span className="text-[10px] font-bold uppercase tracking-[0.2em]">{cap.role}</span>
-                                    </motion.div>
-                                    <motion.h3
-                                        initial={{ opacity: 0, scale: 0.9 }}
-                                        whileInView={{ opacity: 1, scale: 1 }}
-                                        transition={{ delay: (i * 0.2) + 0.6 }}
-                                        className="text-2xl md:text-3xl font-bold text-white drop-shadow-xl uppercase tracking-tight leading-none"
-                                    >
-                                        {cap.name}
-                                    </motion.h3>
-                                </div>
-                            </div>
-                            <div className="p-8">
-                                <div className="flex items-center justify-between mb-6">
-                                    <div className="text-xs font-bold uppercase tracking-widest text-slate-500">Experience</div>
-                                    <div className="text-sm font-bold text-primary">{cap.exp}</div>
-                                </div>
-                                <div className="flex items-center gap-3 text-slate-400 text-sm mb-8">
-                                    <Compass className="w-4 h-4 text-primary" />
-                                    <span>{cap.specialty}</span>
-                                </div>
-                                <a href={cap.insta} className="flex items-center justify-center w-full py-3 bg-white/5 rounded-xl border border-white/10 hover:bg-white hover:text-slate-900 transition-all font-bold text-sm gap-2">
-                                    <Instagram className="w-4 h-4" /> Follow Feed
+                            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-ink shadow-premium">
+                                <img
+                                    src={cap.img}
+                                    loading="lazy"
+                                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.4s] ease-premium group-hover:scale-105"
+                                    alt={`${cap.name}, ${cap.role}`}
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent" />
+
+                                <span className="absolute top-4 left-4 py-1.5 px-3.5 bg-white/15 backdrop-blur-md border border-white/20 rounded-full text-[10px] font-medium uppercase tracking-[0.2em] text-white">
+                                    {cap.exp}
+                                </span>
+
+                                <a
+                                    href={cap.insta}
+                                    aria-label={`${cap.name} on Instagram`}
+                                    className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white flex items-center justify-center transition-all duration-500 hover:bg-white hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                                >
+                                    <Instagram className="w-4 h-4" />
                                 </a>
+
+                                <div className="absolute inset-x-0 bottom-0 p-6 md:p-7 text-white">
+                                    <p className="text-[10px] uppercase tracking-[0.25em] text-secondary-light mb-2">{cap.role}</p>
+                                    <h3 className="font-serif font-light !text-white text-3xl leading-tight">{cap.name}</h3>
+                                    <p className="mt-4 pt-4 border-t border-white/15 flex items-center gap-2 text-sm text-white/70">
+                                        <Compass className="w-4 h-4 text-secondary" /> {cap.specialty}
+                                    </p>
+                                </div>
                             </div>
-                        </motion.div>
+                        </motion.article>
                     ))}
                 </div>
             </div>

@@ -6,11 +6,15 @@ const bookingSchema = mongoose.Schema({
         ref: 'Package',
         required: true
     },
-    userName: { type: String, required: true },
-    email: { type: String, required: true },
-    phone: { type: String, required: true },
+    userName: { type: String, required: true, trim: true },
+    email: { type: String, required: true, trim: true, lowercase: true },
+    phone: { type: String, required: true, trim: true },
     travelDate: { type: Date, required: true },
-    guests: { type: Number, required: true },
+    guests: { type: Number, required: true, min: 1, max: 50 },
+    specialRequests: { type: String, maxlength: 1000 },
+    // Computed on the server from the package price so clients can't tamper with it
+    totalPrice: { type: Number, default: 0 },
+    bookingRef: { type: String, unique: true, sparse: true },
     status: {
         type: String,
         enum: ['pending', 'confirmed', 'cancelled'],

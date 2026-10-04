@@ -6,6 +6,8 @@ const packageRoutes = require('./routes/packageRoutes');
 const userRoutes = require('./routes/userRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const campaignRoutes = require('./routes/campaignRoutes');
+const enquiryRoutes = require('./routes/enquiryRoutes');
+const rateLimit = require('./middleware/rateLimit');
 
 dotenv.config();
 
@@ -16,13 +18,15 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.set('trust proxy', 1);
+app.use(express.json({ limit: '1mb' }));
 
 // Routes
 app.use('/api/packages', packageRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/bookings', bookingRoutes);
+app.use('/api/bookings', rateLimit({ max: 10 }), bookingRoutes);
 app.use('/api/campaigns', campaignRoutes);
+app.use('/api/enquiries', rateLimit({ max: 10 }), enquiryRoutes);
 
 app.get('/', (req, res) => {
     res.send('Safar Chaska API is running...');

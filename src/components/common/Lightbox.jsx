@@ -1,19 +1,36 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, Maximize2, Download } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
+
+const ease = [0.22, 1, 0.36, 1];
 
 const Lightbox = ({ isOpen, onClose, images, currentIndex, setCurrentIndex }) => {
-    if (!images || images.length === 0) return null;
+    const count = images?.length || 0;
 
-    const handlePrevious = (e) => {
-        e.stopPropagation();
-        setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-    };
+    const prev = useCallback(() => setCurrentIndex((p) => (p === 0 ? count - 1 : p - 1)), [count, setCurrentIndex]);
+    const next = useCallback(() => setCurrentIndex((p) => (p === count - 1 ? 0 : p + 1)), [count, setCurrentIndex]);
 
-    const handleNext = (e) => {
-        e.stopPropagation();
-        setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-    };
+    // Keyboard navigation + scroll lock while open
+    useEffect(() => {
+        if (!isOpen) return;
+        const onKey = (e) => {
+            if (e.key === 'Escape') onClose();
+            else if (e.key === 'ArrowLeft') prev();
+            else if (e.key === 'ArrowRight') next();
+        };
+        const prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        window.addEventListener('keydown', onKey);
+        return () => {
+            document.body.style.overflow = prevOverflow;
+            window.removeEventListener('keydown', onKey);
+        };
+    }, [isOpen, onClose, prev, next]);
+
+    if (!count) return null;
+
+    const stop = (fn) => (e) => { e.stopPropagation(); fn(); };
+    const iconBtn = "w-11 h-11 rounded-full border border-white/20 text-white flex items-center justify-center transition-all duration-500 ease-premium hover:bg-white hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary";
 
     return (
         <AnimatePresence>
@@ -22,93 +39,96 @@ const Lightbox = ({ isOpen, onClose, images, currentIndex, setCurrentIndex }) =>
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-2xl p-4 md:p-10"
+                    transition={{ duration: 0.4 }}
+                    className="fixed inset-0 z-[110] flex flex-col bg-ink/[0.97] backdrop-blur-xl"
                     onClick={onClose}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Image gallery"
                 >
-                    {/* Top Controls */}
-                    <div className="absolute top-6 left-0 w-full px-6 flex justify-between items-center z-[110]">
-                        <div className="flex items-center gap-4">
-                            <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 text-white font-black text-sm">
-                                {currentIndex + 1} / {images.length}
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                className="p-3 bg-white/10 hover:bg-white/20 rounded-full text-white border border-white/20"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    window.open(images[currentIndex], '_blank');
-                                }}
+                    {/* Top bar */}
+                    <div className="relative z-10 flex justify-between items-center px-4 sm:px-6 py-4 sm:py-6">
+                        <p className="text-white/60 text-sm tracking-wide">
+                            <span className="font-serif italic text-secondary-light text-xl mr-1">{String(currentIndex + 1).padStart(2, '0')}</span>
+                            / {String(count).padStart(2, '0')}
+                        </p>
+                        <div className="flex items-center gap-2">
+                            <button
+                                type="button"
+                                aria-label="Open full size in new tab"
+                                className={iconBtn}
+                                onClick={stop(() => window.open(images[currentIndex], '_blank'))}
                             >
-                                <Maximize2 className="w-5 h-5" />
-                            </motion.button>
-                            <motion.button
-                                whileHover={{ scale: 1.1, rotate: 90 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={onClose}
-                                className="p-3 bg-primary text-white rounded-full shadow-2xl shadow-primary/40"
-                            >
-                                <X className="w-6 h-6" />
-                            </motion.button>
+                                <Maximize2 className="w-4 h-4" />
+                            </button>
+                            <button type="button" autoFocus aria-label="Close gallery" onClick={stop(onClose)} className={iconBtn}>
+                                <X className="w-5 h-5" />
+                            </button>
                         </div>
                     </div>
 
-                    {/* Image Container */}
-                    <motion.div
-                        key={currentIndex}
-                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.9, y: -20 }}
-                        transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="relative max-w-6xl w-full h-full flex items-center justify-center"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <img
-                            src={images[currentIndex]}
-                            alt={`Gallery ${currentIndex}`}
-                            className="max-w-full max-h-full object-contain rounded-3xl shadow-3xl select-none"
-                        />
-                    </motion.div>
+                    {/* Image */}
+                    <div className="relative flex-1 min-h-0 flex items-center justify-center px-4 sm:px-20">
+                        <AnimatePresence mode="wait" initial={false}>
+                            <motion.img
+                                key={currentIndex}
+                                src={images[currentIndex]}
+                                alt={`Gallery image ${currentIndex + 1} of ${count}`}
+                                initial={{ opacity: 0, scale: 0.98 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.5, ease }}
+                                drag={count > 1 ? 'x' : false}
+                                dragConstraints={{ left: 0, right: 0 }}
+                                dragElastic={0.2}
+                                onDragEnd={(_, { offset, velocity }) => {
+                                    if (offset.x < -60 || velocity.x < -400) next();
+                                    else if (offset.x > 60 || velocity.x > 400) prev();
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                                className="max-w-full max-h-full object-contain rounded-2xl select-none cursor-grab active:cursor-grabbing touch-pan-y"
+                                draggable={false}
+                            />
+                        </AnimatePresence>
 
-                    {/* Navigation Arrows */}
-                    {images.length > 1 && (
-                        <>
-                            <motion.button
-                                whileHover={{ scale: 1.1, x: -5 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={handlePrevious}
-                                className="absolute left-6 top-1/2 -translate-y-1/2 p-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-white backdrop-blur-md z-[110]"
-                            >
-                                <ChevronLeft className="w-8 h-8" />
-                            </motion.button>
-                            <motion.button
-                                whileHover={{ scale: 1.1, x: 5 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={handleNext}
-                                className="absolute right-6 top-1/2 -translate-y-1/2 p-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-white backdrop-blur-md z-[110]"
-                            >
-                                <ChevronRight className="w-8 h-8" />
-                            </motion.button>
-                        </>
-                    )}
+                        {count > 1 && (
+                            <>
+                                <button
+                                    type="button"
+                                    aria-label="Previous image"
+                                    onClick={stop(prev)}
+                                    className={`hidden sm:flex absolute left-6 top-1/2 -translate-y-1/2 !w-12 !h-12 ${iconBtn}`}
+                                >
+                                    <ChevronLeft className="w-5 h-5" />
+                                </button>
+                                <button
+                                    type="button"
+                                    aria-label="Next image"
+                                    onClick={stop(next)}
+                                    className={`hidden sm:flex absolute right-6 top-1/2 -translate-y-1/2 !w-12 !h-12 ${iconBtn}`}
+                                >
+                                    <ChevronRight className="w-5 h-5" />
+                                </button>
+                            </>
+                        )}
+                    </div>
 
                     {/* Thumbnails */}
-                    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 px-6 py-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] max-w-[90vw] overflow-x-auto no-scrollbar z-[110]">
-                        {images.map((img, i) => (
-                            <motion.div
-                                key={i}
-                                whileHover={{ scale: 1.1 }}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setCurrentIndex(i);
-                                }}
-                                className={`w-16 h-16 rounded-2xl overflow-hidden cursor-pointer shrink-0 border-2 transition-all ${currentIndex === i ? 'border-primary scale-110 shadow-lg shadow-primary/40' : 'border-transparent opacity-40 hover:opacity-100'}`}
-                            >
-                                <img src={img} alt="thumb" className="w-full h-full object-cover" />
-                            </motion.div>
-                        ))}
+                    <div className="relative z-10 py-5 sm:py-6 flex justify-center">
+                        <div className="flex gap-2 px-4 max-w-full overflow-x-auto scrollbar-hide" onClick={(e) => e.stopPropagation()}>
+                            {images.map((img, i) => (
+                                <button
+                                    type="button"
+                                    key={i}
+                                    onClick={() => setCurrentIndex(i)}
+                                    aria-label={`Show image ${i + 1}`}
+                                    aria-current={currentIndex === i}
+                                    className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden shrink-0 transition-all duration-500 ease-premium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary ${currentIndex === i ? 'ring-2 ring-secondary opacity-100' : 'opacity-40 hover:opacity-80'}`}
+                                >
+                                    <img src={img} alt="" loading="lazy" className="w-full h-full object-cover" />
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </motion.div>
             )}

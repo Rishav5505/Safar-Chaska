@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Briefcase, CheckCircle2, Circle, Wind, ThermometerSnowflake, Mountain, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Briefcase, Check, Wind, ThermometerSnowflake, Mountain, Zap } from 'lucide-react';
+
+const ease = [0.22, 1, 0.36, 1];
 
 const packingItems = [
     { id: 1, text: "Gore-Tex or Waterproof Jacket", category: "Apparel" },
@@ -17,76 +19,89 @@ const PackingList = () => {
     const [checkedItems, setCheckedItems] = useState([]);
 
     const toggleItem = (id) => {
-        if (checkedItems.includes(id)) {
-            setCheckedItems(prev => prev.filter(item => item !== id));
-        } else {
-            setCheckedItems(prev => [...prev, id]);
-        }
+        setCheckedItems((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
     };
 
     const progress = (checkedItems.length / packingItems.length) * 100;
 
     return (
-        <section className="py-24 bg-white rounded-[4rem] border border-slate-100 shadow-3xl shadow-black/5 overflow-hidden">
-            <div className="container mx-auto px-8 md:px-16">
-                <div className="flex flex-col lg:flex-row gap-20 items-center">
-                    <div className="lg:w-1/2">
-                        <div className="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mb-8">
-                            <Briefcase className="w-8 h-8 text-secondary" />
-                        </div>
-                        <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">Himalayan <br />Checklist.</h2>
-                        <p className="text-xl text-slate-500 font-medium mb-12">Don't leave without these essentials. Check them off as you pack your bags!</p>
+        <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, ease }}
+            className="bg-white rounded-3xl shadow-premium p-6 sm:p-10 md:p-14"
+        >
+            <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
+                <div className="lg:w-5/12">
+                    <span className="w-12 h-12 rounded-full border border-primary/20 text-primary flex items-center justify-center mb-8">
+                        <Briefcase className="w-5 h-5" />
+                    </span>
+                    <p className="eyebrow mb-4">Before you go</p>
+                    <h2 className="heading-premium text-4xl md:text-5xl mb-5">Himalayan <em>checklist</em></h2>
+                    <p className="text-slate-500 mb-10 leading-relaxed">Don&rsquo;t leave without these essentials. Tick them off as you pack.</p>
 
-                        <div className="bg-slate-50 rounded-3xl p-8 mb-10 border border-slate-100">
-                            <div className="flex justify-between items-center mb-4">
-                                <p className="font-black text-slate-900 uppercase tracking-widest text-xs">Packing Progress</p>
-                                <span className="text-primary font-black">{Math.round(progress)}%</span>
-                            </div>
-                            <div className="h-4 bg-slate-200 rounded-full overflow-hidden">
-                                <motion.div
-                                    initial={{ width: 0 }}
-                                    animate={{ width: `${progress}%` }}
-                                    className="h-full bg-primary"
-                                ></motion.div>
-                            </div>
+                    <div className="rounded-2xl bg-sand p-6 mb-8">
+                        <div className="flex justify-between items-baseline mb-4">
+                            <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500">Packing progress</p>
+                            <span className="font-serif text-2xl text-primary">{Math.round(progress)}%</span>
                         </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {[
-                                { icon: ThermometerSnowflake, label: "Cold Ready" },
-                                { icon: Wind, label: "Windproof" },
-                                { icon: Mountain, label: "All Terrain" },
-                                { icon: Zap, label: "High Energy" }
-                            ].map((tag, i) => (
-                                <div key={i} className="flex items-center gap-3 text-slate-400 font-bold">
-                                    <tag.icon className="w-5 h-5" />
-                                    <span className="text-sm uppercase tracking-widest">{tag.label}</span>
-                                </div>
-                            ))}
+                        <div className="h-1 bg-ink/10 rounded-full overflow-hidden" role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100} aria-label="Packing progress">
+                            <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${progress}%` }}
+                                transition={{ duration: 0.6, ease }}
+                                className="h-full bg-primary"
+                            />
                         </div>
                     </div>
 
-                    <div className="lg:w-1/2 w-full grid grid-cols-1 gap-3">
-                        {packingItems.map((item) => (
-                            <motion.button
-                                key={item.id}
-                                onClick={() => toggleItem(item.id)}
-                                whileTap={{ scale: 0.98 }}
-                                className={`flex items-center gap-6 p-6 rounded-3xl text-left transition-all border ${checkedItems.includes(item.id) ? 'bg-primary/5 border-primary/20' : 'bg-white border-slate-100 hover:border-slate-300'}`}
-                            >
-                                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${checkedItems.includes(item.id) ? 'bg-primary text-white' : 'border-2 border-slate-200 text-transparent'}`}>
-                                    <CheckCircle2 className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <p className={`font-black tracking-tight text-lg transition-colors ${checkedItems.includes(item.id) ? 'text-primary line-through opacity-50' : 'text-slate-900'}`}>{item.text}</p>
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">{item.category}</span>
-                                </div>
-                            </motion.button>
+                    <div className="grid grid-cols-2 gap-4">
+                        {[
+                            { icon: ThermometerSnowflake, label: "Cold ready" },
+                            { icon: Wind, label: "Windproof" },
+                            { icon: Mountain, label: "All terrain" },
+                            { icon: Zap, label: "High energy" }
+                        ].map((tag) => (
+                            <div key={tag.label} className="flex items-center gap-2.5 text-slate-500">
+                                <tag.icon className="w-4 h-4 text-primary" />
+                                <span className="text-[11px] uppercase tracking-[0.2em]">{tag.label}</span>
+                            </div>
                         ))}
                     </div>
                 </div>
+
+                <ul className="lg:w-7/12 w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {packingItems.map((item, i) => {
+                        const checked = checkedItems.includes(item.id);
+                        return (
+                            <motion.li
+                                key={item.id}
+                                initial={{ opacity: 0, y: 16 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.7, delay: i * 0.05, ease }}
+                            >
+                                <button
+                                    type="button"
+                                    onClick={() => toggleItem(item.id)}
+                                    aria-pressed={checked}
+                                    className={`w-full h-full flex items-start gap-4 p-5 rounded-2xl text-left border transition-all duration-500 ease-premium hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20 ${checked ? 'bg-primary/[0.05] border-primary/30' : 'bg-white border-ink/10 hover:border-primary/30'}`}
+                                >
+                                    <span className={`mt-0.5 shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 ${checked ? 'bg-primary text-white' : 'border border-ink/20 text-transparent'}`}>
+                                        <Check className="w-3.5 h-3.5" />
+                                    </span>
+                                    <span>
+                                        <span className={`block font-serif text-lg leading-snug transition-colors duration-300 ${checked ? 'text-slate-400 line-through decoration-primary/40' : 'text-ink'}`}>{item.text}</span>
+                                        <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400">{item.category}</span>
+                                    </span>
+                                </button>
+                            </motion.li>
+                        );
+                    })}
+                </ul>
             </div>
-        </section>
+        </motion.section>
     );
 };
 

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -49,6 +49,53 @@
     @apply max-w-7xl mx-auto px-6 md:px-12;
   }
 
+  /* Small uppercase label above section titles */
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.35em] text-primary;
+  }
+
+  .eyebrow::before {
+    content: '';
+    @apply block h-px w-8 bg-current opacity-60;
+  }
+
+  /* Elegant serif headline with italic accent support */
+  .heading-premium {
+    @apply font-serif font-light tracking-tight leading-[1.05] text-ink;
+    font-variation-settings: 'opsz' 144;
+  }
+
+  .heading-premium em {
+    @apply italic font-normal text-primary;
+  }
+
+  /* Diagonal light sweep on hover */
+  .shine {
+    @apply relative overflow-hidden;
+  }
+
+  .shine::after {
+    content: '';
+    @apply absolute inset-y-0 -left-full w-1/2 pointer-events-none;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transition: left 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .shine:hover::after {
+    left: 150%;
+  }
+
+  /* Subtle film grain overlay for photographic sections */
+  .grain::before {
+    content: '';
+    @apply absolute inset-0 pointer-events-none z-[1] opacity-[0.07] mix-blend-overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .shadow-premium {
+    box-shadow: 0 1px 2px rgba(11, 18, 21, 0.04), 0 12px 32px -12px rgba(11, 18, 21, 0.18);
+  }
+
   .shadow-soft {
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
   }
@@ -60,17 +107,26 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-slate-50;
+  @apply bg-sand;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 rounded-full border-2 border-transparent bg-clip-padding hover:bg-slate-300;
+  @apply bg-ink/20 rounded-full border-2 border-transparent bg-clip-padding hover:bg-primary/60;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
@@ -80,4 +136,21 @@
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+/* Lenis smooth scroll — native smooth-scroll must be off while Lenis drives the page */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }

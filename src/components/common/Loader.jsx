@@ -1,71 +1,53 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mountain } from 'lucide-react';
 
-const Loader = () => {
+const ease = [0.22, 1, 0.36, 1];
+
+// Minimal brand intro — shown once per session, about a second long.
+const Loader = ({ duration = 1.1 }) => {
     return (
         <motion.div
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="fixed inset-0 z-[10000] bg-slate-900 flex flex-col items-center justify-center overflow-hidden"
+            exit={{ opacity: 0, transition: { duration: 0.6, ease } }}
+            className="grain fixed inset-0 z-[10000] bg-ink flex items-center justify-center overflow-hidden"
+            role="status"
+            aria-label="Loading Safar Chaska"
         >
-            {/* Animated Background Rings */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-10">
-                <motion.div
-                    animate={{
-                        scale: [1, 2, 1],
-                        rotate: [0, 360],
-                    }}
-                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                    className="w-[500px] h-[500px] border-2 border-white rounded-[40%]"
+            <div className="relative z-10 flex flex-col items-center px-6">
+                <motion.img
+                    src="/logo.webp"
+                    alt=""
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, ease }}
+                    className="w-12 h-12 rounded-full object-cover border border-white/15 mb-6"
                 />
-                <motion.div
-                    animate={{
-                        scale: [1.5, 1, 1.5],
-                        rotate: [360, 0],
-                    }}
-                    transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                    className="absolute w-[700px] h-[700px] border-2 border-primary rounded-[45%]"
-                />
-            </div>
-
-            <div className="relative">
-                <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: [0.8, 1.1, 1], opacity: 1 }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    className="flex flex-col items-center"
-                >
-                    <div className="w-24 h-24 bg-primary/20 rounded-[2rem] flex items-center justify-center mb-6 border border-primary/30 backdrop-blur-xl">
-                        <Mountain className="w-12 h-12 text-white" />
-                    </div>
-
-                    <motion.h2
-                        className="text-4xl font-black text-white tracking-tighter"
-                        animate={{ opacity: [0.5, 1, 0.5] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                    >
-                        Safar<span className="text-secondary">Chaska</span>
-                    </motion.h2>
-
-                    <div className="mt-8 w-48 h-1 bg-white/5 rounded-full overflow-hidden relative">
-                        <motion.div
-                            className="absolute inset-y-0 left-0 bg-primary"
-                            initial={{ width: "0%" }}
-                            animate={{ width: "100%" }}
-                            transition={{ duration: 2.5, ease: "easeInOut" }}
-                        />
-                    </div>
+                <div className="overflow-hidden pb-[0.1em]">
                     <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.5 }}
-                        className="mt-4 text-slate-500 font-bold uppercase tracking-[0.3em] text-xs"
+                        initial={{ y: '100%', opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.9, delay: 0.1, ease }}
+                        className="font-serif font-light text-white text-4xl sm:text-5xl tracking-tight"
                     >
-                        Mapping Your Adventure...
+                        Safar <em className="italic text-secondary-light">Chaska</em>
                     </motion.p>
-                </motion.div>
+                </div>
+                <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.8, delay: 0.35 }}
+                    className="mt-3 text-[10px] uppercase tracking-[0.35em] text-white/40"
+                >
+                    Himalayan journeys
+                </motion.p>
+                <div className="mt-8 w-40 h-px bg-white/10 overflow-hidden">
+                    <motion.div
+                        className="h-full bg-secondary origin-left"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        transition={{ duration, ease: [0.65, 0, 0.35, 1] }}
+                    />
+                </div>
             </div>
         </motion.div>
     );

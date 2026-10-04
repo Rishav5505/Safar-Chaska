@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Sparkles, ArrowRight, User, ChevronRight, Compass, Map, Info, Phone } from 'lucide-react';
+import { Sparkles, ArrowRight, User, ChevronRight, Compass, Map, Info, Phone, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../common/Button';
+import useWishlist from '../../hooks/useWishlist';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
+    const { count: savedCount } = useWishlist();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -75,9 +77,9 @@ const Navbar = () => {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        className="bg-primary py-2 relative overflow-hidden"
+                        className="bg-ink py-2 relative overflow-hidden"
                     >
-                        <div className="container-custom relative z-10 flex items-center justify-center gap-3 text-white text-[10px] md:text-xs font-bold uppercase tracking-widest text-center">
+                        <div className="container-custom relative z-10 flex items-center justify-center gap-3 text-white/85 text-[10px] md:text-[11px] font-medium uppercase tracking-[0.25em] text-center">
                             <Sparkles className="w-3 h-3 text-secondary" />
                             <span>Flat 20% Off on Group Bookings for March</span>
                             <Link to="/booking" className="inline-flex items-center gap-1 hover:underline">
@@ -89,12 +91,12 @@ const Navbar = () => {
             </AnimatePresence>
 
             {/* Main Navbar */}
-            <nav className={`transition-all duration-500 ${scrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-5 md:py-8'}`}>
+            <nav className={`transition-all duration-700 ease-premium border-b ${scrolled ? 'bg-white/75 backdrop-blur-xl backdrop-saturate-150 border-ink/5 shadow-[0_8px_30px_-12px_rgba(11,18,21,0.12)] py-3' : 'bg-gradient-to-b from-black/40 to-transparent border-transparent py-5 md:py-7'}`}>
                 <div className="container-custom flex items-center justify-between">
                     <Link to="/" className="flex items-center space-x-3 relative z-[110]">
                         <div className="w-10 h-10 rounded-lg overflow-hidden border border-white/10 shadow-lg">
                             <img
-                                src="/logo.jpg"
+                                src="/logo.webp"
                                 alt="Safar Chaska Logo"
                                 className="w-full h-full object-cover"
                             />
@@ -106,18 +108,43 @@ const Navbar = () => {
 
                     {/* Desktop Menu */}
                     <div className="hidden lg:flex items-center space-x-1">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.name}
-                                to={link.path}
-                                className={`px-5 py-2 rounded-full text-sm font-semibold transition-all ${scrolled ? 'text-slate-600 hover:text-primary' : 'text-white/80 hover:text-white'} ${location.pathname === link.path ? (scrolled ? 'bg-slate-100 text-slate-900' : 'bg-white/20 text-white') : ''}`}
-                            >
-                                {link.name}
-                            </Link>
-                        ))}
-                        <div className="w-px h-6 bg-slate-200/20 mx-4" />
-                        <Link to="/booking" className="ml-2">
-                            <Button size="sm" className="rounded-full px-6 py-2.5 text-xs font-bold uppercase tracking-widest">
+                        {navLinks.map((link) => {
+                            const active = location.pathname === link.path;
+                            return (
+                                <Link
+                                    key={link.name}
+                                    to={link.path}
+                                    className={`group relative px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-300 ${scrolled ? (active ? 'text-ink' : 'text-slate-500 hover:text-ink') : (active ? 'text-white' : 'text-white/75 hover:text-white')}`}
+                                >
+                                    {link.name}
+                                    <span className={`absolute left-4 right-4 -bottom-0.5 h-px origin-left transition-transform duration-500 ease-premium ${scrolled ? 'bg-primary' : 'bg-secondary'} ${active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} />
+                                </Link>
+                            );
+                        })}
+                        <Link
+                            to="/packages?saved=1"
+                            aria-label={`Saved trips (${savedCount})`}
+                            className={`relative ml-2 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 ${scrolled ? 'text-slate-500 hover:text-rose-500 hover:bg-ink/5' : 'text-white/80 hover:text-white hover:bg-white/10'}`}
+                        >
+                            <Heart className={`w-[18px] h-[18px] ${savedCount ? 'fill-rose-500 text-rose-500' : ''}`} />
+                            <AnimatePresence>
+                                {savedCount > 0 && (
+                                    <motion.span
+                                        key={savedCount}
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        exit={{ scale: 0 }}
+                                        transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+                                        className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-secondary text-ink text-[10px] font-bold flex items-center justify-center"
+                                    >
+                                        {savedCount}
+                                    </motion.span>
+                                )}
+                            </AnimatePresence>
+                        </Link>
+                        <div className={`w-px h-5 mx-3 ${scrolled ? 'bg-ink/10' : 'bg-white/20'}`} />
+                        <Link to="/booking" className="ml-1">
+                            <Button size="sm" variant={scrolled ? 'primary' : 'glass'} className="rounded-full px-6 py-2.5 text-[11px] uppercase tracking-[0.2em]">
                                 Book Now
                             </Button>
                         </Link>
@@ -193,6 +220,15 @@ const Navbar = () => {
                                         </motion.div>
                                     ))}
                                 </div>
+
+                                <motion.div variants={itemVariants} className="mt-10">
+                                    <Link to="/packages?saved=1" className="flex items-center justify-between p-4 rounded-2xl bg-sand border border-ink/5">
+                                        <span className="flex items-center gap-3 text-sm font-medium text-ink">
+                                            <Heart className={`w-4 h-4 ${savedCount ? 'fill-rose-500 text-rose-500' : 'text-slate-400'}`} /> Saved trips
+                                        </span>
+                                        <span className="text-xs font-bold text-slate-500">{savedCount}</span>
+                                    </Link>
+                                </motion.div>
 
                                 <motion.div variants={itemVariants} className="mt-auto pt-12 pb-6 space-y-8">
                                     <div className="p-6 rounded-[2rem] bg-slate-900 text-white relative overflow-hidden group">

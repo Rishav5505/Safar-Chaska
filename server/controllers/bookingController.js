@@ -1,13 +1,36 @@
 const Booking = require('../models/bookingModel');
+const Package = require('../models/packageModel');
+
+// Short human-friendly reference, e.g. SC-7K2QX9
+const makeBookingRef = () => 'SC-' + Math.random().toString(36).slice(2, 8).toUpperCase();
 
 // @desc    Create new booking
 // @route   POST /api/bookings
 // @access  Public
 const addBookingItems = async (req, res) => {
     try {
-        const { packageId, userName, email, phone, travelDate, guests } = req.body;
+        const { packageId, userName, email, phone, travelDate, guests, specialRequests } = req.body;
+
+        const pkg = await Package.findById(packageId);
+        if (!pkg) {
+            return res.status(404).json({ message: 'Selected package no longer exists' });
+        }
+
+        const date = new Date(travelDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (isNaN(date) || date < today) {
+            return res.status(400).json({ message: 'Please choose a future travel date' });
+        }
+
+        const guestCount = Math.max(1, parseInt(guests, 10) || 1);
+
         const booking = new Booking({
-            packageId, userName, email, phone, travelDate, guests
+            packageId, userName, email, phone, specialRequests,
+            travelDate: date,
+            guests: guestCount,
+            totalPrice: pkg.price * guestCount,
+            bookingRef: makeBookingRef()
         });
         const createdBooking = await booking.save();
         res.status(201).json(createdBooking);
@@ -21,7 +44,7 @@ const addBookingItems = async (req, res) => {
 // @access  Private/Admin
 const getBookings = async (req, res) => {
     try {
-        const bookings = await Booking.find({}).populate('packageId', 'title').sort('-createdAt');
+        const bookings = await Booking.find({}).populate('packageId', 'title price').sort('-createdAt');
         res.json(bookings);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -33,19 +56,20 @@ const getBookings = async (req, res) => {
 // @access  Private/Admin
 const getDashboardStats = async (req, res) => {
     try {
-        const totalBookings = await Booking.countDocuments();
-        const bookings = await Booking.find({});
-
-        // Simple logic for revenue (sum of prices of all bookings)
-        // Note: Real world would use package prices from populated data
-        const revenue = bookings.reduce((acc, curr) => acc + (curr.totalPrice || 0), 0);
-
-        const pendingBookings = await Booking.countDocuments({ status: 'pending' });
-        const confirmedBookings = await Booking.countDocuments({ status: 'confirmed' });
+        const [totalBookings, pendingBookings, confirmedBookings, revenueAgg] = await Promise.all([
+            Booking.countDocuments(),
+            Booking.countDocuments({ status: 'pending' }),
+            Booking.countDocuments({ status: 'confirmed' }),
+            // Only confirmed bookings count as revenue
+            Booking.aggregate([
+                { $match: { status: 'confirmed' } },
+                { $group: { _id: null, total: { $sum: '$totalPrice' } } }
+            ])
+        ]);
 
         res.json({
             totalBookings,
-            revenue,
+            revenue: revenueAgg[0]?.total || 0,
             pendingBookings,
             confirmedBookings
         });

@@ -1,160 +1,127 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Cloud, Sun, CloudRain, Snowflake, Thermometer, Wind, Zap, Moon, Compass, Map } from 'lucide-react';
+import { Sun, CloudRain, Snowflake, Droplets, Wind, Moon, Compass, Sparkles } from 'lucide-react';
+
+const ease = [0.22, 1, 0.36, 1];
+
+const getVibeStatus = (temp, condition) => {
+    const hour = new Date().getHours();
+    const isNight = hour >= 19 || hour <= 5;
+    const c = condition.toLowerCase();
+
+    if (isNight && c.includes('clear')) {
+        return { text: "Ideal for stargazing", activity: "Head to Chilmiri Neck for the clearest Milky Way views.", icon: Moon };
+    }
+    if (temp < 10) {
+        return { text: "Chilly — perfect for a bonfire", activity: "Grab some hot tea and sit by the wood-fire at our camp.", icon: Snowflake };
+    }
+    if (c.includes('rain')) {
+        return { text: "Cozy monsoon vibes", activity: "Perfect time for a forest drive or indoor photography.", icon: CloudRain };
+    }
+    if (temp > 18 && c.includes('clear')) {
+        return { text: "Perfect for trekking", activity: "Tiger Falls trek is highly recommended today.", icon: Sun };
+    }
+    return { text: "Pure mountain air", activity: "Explore the local Chakrata market and Deodar trails.", icon: Compass };
+};
 
 const WeatherWidget = ({ location = "Chakrata" }) => {
-    const [weather, setWeather] = useState({
-        temp: '--°',
-        condition: 'Fetching...',
-        icon: Sun,
-        humidity: '--',
-        wind: '--',
-        vibe: 'Analyzing Vibe...',
-        color: 'from-blue-500 to-indigo-600'
-    });
-
-    const getVibeStatus = (temp, condition) => {
-        const hour = new Date().getHours();
-        const isNight = hour >= 19 || hour <= 5;
-
-        if (isNight && condition.toLowerCase().includes('clear')) {
-            return {
-                text: "Ideal for Stargazing",
-                activity: "Head to Chilmiri Neck for the clearest Milky Way views.",
-                color: "from-slate-900 to-violet-950",
-                icon: Moon
-            };
-        }
-        if (temp < 10) {
-            return {
-                text: "Chilly - Perfect for Bonfire",
-                activity: "Grab some hot tea and sit by the wood-fire at our camp.",
-                color: "from-blue-600 to-cyan-500",
-                icon: Snowflake
-            };
-        }
-        if (condition.toLowerCase().includes('rain')) {
-            return {
-                text: "Cozy Monsoon Vibes",
-                activity: "Perfect time for a forest drive or indoor photography.",
-                color: "from-indigo-600 to-blue-800",
-                icon: CloudRain
-            };
-        }
-        if (temp > 18 && condition.toLowerCase().includes('clear')) {
-            return {
-                text: "Perfect for Trekking",
-                activity: "Tiger Falls trek is highly recommended today.",
-                color: "from-orange-500 to-red-500",
-                icon: Sun
-            };
-        }
-        return {
-            text: "Pure Mountain Air",
-            activity: "Explore the local Chakrata market and Deodar trails.",
-            color: "from-teal-500 to-emerald-600",
-            icon: Compass
-        };
-    };
+    const [weather, setWeather] = useState(null);
 
     useEffect(() => {
-        // Simulate real data fetching with realistic values for Chakrata
+        // Simulated fetch with realistic values for Chakrata
         const timer = setTimeout(() => {
-            const mockData = {
-                temp: 14,
-                condition: 'Mostly Clear',
-                humidity: '42%',
-                wind: '8 km/h'
-            };
-
+            const mockData = { temp: 14, condition: 'Mostly Clear', humidity: '42%', wind: '8 km/h' };
             const vibe = getVibeStatus(mockData.temp, mockData.condition);
-
             setWeather({
-                temp: `${mockData.temp}°C`,
+                temp: mockData.temp,
                 condition: mockData.condition,
-                icon: Sun,
                 humidity: mockData.humidity,
                 wind: mockData.wind,
                 vibe: vibe.text,
                 activity: vibe.activity,
                 vibeIcon: vibe.icon,
-                color: vibe.color
             });
-        }, 1500);
-
+        }, 1200);
         return () => clearTimeout(timer);
     }, [location]);
 
+    const VibeIcon = weather?.vibeIcon || Sun;
+    const loading = !weather;
+
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className={`relative group overflow-hidden bg-gradient-to-br ${weather.color} p-[1px] rounded-[3rem] shadow-2xl shadow-indigo-500/20`}
+            transition={{ duration: 0.9, ease }}
+            className="grain relative overflow-hidden bg-ink rounded-3xl shadow-premium text-white"
+            aria-busy={loading}
         >
-            <div className="bg-slate-950/40 backdrop-blur-2xl p-8 md:p-12 rounded-[2.9rem] flex flex-col md:flex-row items-center justify-between gap-12 border border-white/10">
-                {/* Real-time Status */}
-                <div className="flex items-center gap-8 w-full md:w-auto">
-                    <div className="relative">
-                        <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                            className="w-24 h-24 bg-white/10 rounded-full blur-2xl absolute inset-0"
-                        />
-                        <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-3xl flex items-center justify-center border border-white/20 relative z-10">
-                            {weather.vibeIcon ? <weather.vibeIcon className="w-10 h-10 text-white" /> : <Sun className="w-10 h-10 text-white" />}
-                        </div>
-                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-secondary rounded-full border-4 border-slate-950 animate-pulse" />
-                    </div>
+            <div aria-hidden="true" className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-primary/20 blur-[100px]" />
+            <div aria-hidden="true" className="absolute -bottom-24 -right-24 w-72 h-72 rounded-full bg-secondary/10 blur-[100px]" />
 
+            <div className="relative z-[2] grid grid-cols-1 lg:grid-cols-12">
+                {/* Now */}
+                <div className="lg:col-span-4 p-8 md:p-10 flex items-center gap-6 border-b lg:border-b-0 lg:border-r border-white/10">
+                    <span className="w-16 h-16 rounded-full border border-secondary/30 text-secondary flex items-center justify-center shrink-0">
+                        <VibeIcon className="w-6 h-6" />
+                    </span>
                     <div>
-                        <div className="flex items-center gap-2 mb-2">
-                            <span className="w-2 h-2 bg-green-500 rounded-full animate-ping" />
-                            <p className="text-xs font-black uppercase tracking-[0.3em] text-white/50">Live Status • {location}</p>
-                        </div>
-                        <h3 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-1">{weather.temp}</h3>
-                        <p className="text-lg font-bold text-white/90">{weather.condition}</p>
+                        <p className="flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-white/50 mb-2">
+                            <span className="relative flex w-2 h-2">
+                                <span className="absolute inline-flex w-full h-full rounded-full bg-primary-light opacity-60 animate-ping" />
+                                <span className="relative inline-flex w-2 h-2 rounded-full bg-primary-light" />
+                            </span>
+                            Live · {location}
+                        </p>
+                        {loading ? (
+                            <div className="space-y-2" aria-label="Loading weather">
+                                <div className="h-12 w-28 rounded-lg bg-white/10 animate-pulse" />
+                                <div className="h-4 w-24 rounded bg-white/10 animate-pulse" />
+                            </div>
+                        ) : (
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+                                <p className="font-serif font-light text-6xl leading-none">{weather.temp}<span className="text-secondary-light">°</span><span className="text-2xl text-white/50 ml-1">C</span></p>
+                                <p className="mt-2 text-white/70">{weather.condition}</p>
+                            </motion.div>
+                        )}
                     </div>
                 </div>
 
-                {/* Vibe Indicator */}
-                <div className="flex-1 w-full text-center md:text-left md:px-12 md:border-x border-white/10">
-                    <p className="text-xs font-black uppercase tracking-[0.3em] text-white/50 mb-3">Current Vibe</p>
+                {/* Vibe */}
+                <div className="lg:col-span-5 p-8 md:p-10 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center">
+                    <p className="text-[10px] uppercase tracking-[0.25em] text-white/50 mb-3">Today&rsquo;s vibe</p>
                     <AnimatePresence mode="wait">
-                        <motion.div
-                            key={weather.vibe}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            className="flex flex-col gap-2"
-                        >
-                            <span className="text-2xl md:text-3xl font-black text-white">
-                                {weather.vibe}
-                            </span>
-                            <p className="text-sm font-medium text-white/60 max-w-xs mx-auto md:mx-0">
-                                <Zap className="w-3 h-3 inline mr-1 text-secondary" /> {weather.activity}
-                            </p>
-                        </motion.div>
+                        {loading ? (
+                            <motion.div key="l" exit={{ opacity: 0 }} className="space-y-2">
+                                <div className="h-8 w-3/4 rounded-lg bg-white/10 animate-pulse" />
+                                <div className="h-4 w-full rounded bg-white/10 animate-pulse" />
+                            </motion.div>
+                        ) : (
+                            <motion.div key="v" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease }}>
+                                <p className="font-serif font-light text-3xl md:text-4xl leading-tight">{weather.vibe}</p>
+                                <p className="mt-3 text-sm text-white/60 leading-relaxed flex gap-2">
+                                    <Sparkles className="w-4 h-4 text-secondary shrink-0 mt-0.5" /> {weather.activity}
+                                </p>
+                            </motion.div>
+                        )}
                     </AnimatePresence>
                 </div>
 
-                {/* Secondary Stats */}
-                <div className="flex gap-10 w-full md:w-auto justify-center md:justify-end">
-                    <div className="text-center">
-                        <Thermometer className="w-6 h-6 text-white/40 mx-auto mb-3" />
-                        <p className="text-[10px] font-black uppercase text-white/40 tracking-[0.2em] mb-1">Humidity</p>
-                        <p className="font-black text-white text-lg">{weather.humidity}</p>
-                    </div>
-                    <div className="text-center">
-                        <Wind className="w-6 h-6 text-white/40 mx-auto mb-3" />
-                        <p className="text-[10px] font-black uppercase text-white/40 tracking-[0.2em] mb-1">Wind Speed</p>
-                        <p className="font-black text-white text-lg">{weather.wind}</p>
-                    </div>
+                {/* Stats */}
+                <div className="lg:col-span-3 grid grid-cols-2">
+                    {[
+                        { icon: Droplets, label: 'Humidity', value: weather?.humidity },
+                        { icon: Wind, label: 'Wind', value: weather?.wind },
+                    ].map((s, i) => (
+                        <div key={s.label} className={`p-8 md:p-10 flex flex-col justify-center ${i === 0 ? 'border-r border-white/10' : ''}`}>
+                            <s.icon className="w-4 h-4 text-secondary mb-4" />
+                            <p className="text-[10px] uppercase tracking-[0.25em] text-white/45 mb-1">{s.label}</p>
+                            <p className="font-serif text-2xl">{s.value || '—'}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
-
-            {/* Background Decorative Elements */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
         </motion.div>
     );
 };

@@ -1,88 +1,98 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calculator, Users, Calendar, Wallet, CheckCircle2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Calculator, Check, ArrowRight } from 'lucide-react';
 import Button from './Button';
+
+const ease = [0.22, 1, 0.36, 1];
+
+const Slider = ({ id, label, value, min, max, onChange, suffix }) => {
+    const pct = ((value - min) / (max - min)) * 100;
+    return (
+        <div>
+            <div className="flex justify-between items-end mb-4">
+                <label htmlFor={id} className="text-[11px] uppercase tracking-[0.2em] text-slate-500">{label}</label>
+                <span className="font-serif text-3xl text-ink leading-none">{value}<span className="text-sm text-slate-400 ml-1 font-sans">{suffix}</span></span>
+            </div>
+            <input
+                id={id}
+                type="range"
+                min={min}
+                max={max}
+                value={value}
+                onChange={(e) => onChange(parseInt(e.target.value, 10))}
+                className="w-full h-1 rounded-full appearance-none cursor-pointer accent-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
+                style={{ background: `linear-gradient(to right, #0F766E ${pct}%, rgba(11,18,21,0.1) ${pct}%)` }}
+            />
+            <div className="flex justify-between mt-2 text-[10px] text-slate-400"><span>{min}</span><span>{max}</span></div>
+        </div>
+    );
+};
 
 const BudgetCalculator = ({ basePrice = 4999 }) => {
     const [travelers, setTravelers] = useState(2);
     const [days, setDays] = useState(3);
 
-    const priceInt = parseInt(basePrice.toString().replace(',', ''));
+    const priceInt = parseInt(basePrice.toString().replace(/,/g, ''), 10) || 0;
     const total = (priceInt * travelers) + (travelers * 500 * (days - 1)); // Base + extras per day
 
     return (
-        <section className="bg-white rounded-[3.5rem] p-10 md:p-16 border border-slate-100 shadow-3xl shadow-black/5 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
-
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, ease }}
+            className="bg-white rounded-3xl p-6 sm:p-10 md:p-14 shadow-premium"
+        >
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
                 <div>
-                    <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8">
-                        <Calculator className="w-8 h-8 text-primary" />
-                    </div>
-                    <h2 className="text-4xl font-black text-slate-900 mb-6">Smart Budget <br />Estimator.</h2>
-                    <p className="text-xl text-slate-500 font-medium mb-12">Plan your finances before the adventure. No hidden costs, just pure transparency.</p>
+                    <span className="w-12 h-12 rounded-full border border-primary/20 text-primary flex items-center justify-center mb-8">
+                        <Calculator className="w-5 h-5" />
+                    </span>
+                    <p className="eyebrow mb-4">Plan ahead</p>
+                    <h2 className="heading-premium text-4xl md:text-5xl mb-5">Smart budget <em>estimator</em></h2>
+                    <p className="text-slate-500 mb-10 leading-relaxed">Plan your finances before the adventure. No hidden costs, just pure transparency.</p>
 
                     <div className="space-y-10">
-                        {/* Travelers Slider */}
-                        <div className="space-y-4">
-                            <div className="flex justify-between items-end">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Number of Travelers</label>
-                                <span className="text-2xl font-black text-primary">{travelers}</span>
-                            </div>
-                            <input
-                                type="range" min="1" max="15" value={travelers}
-                                onChange={(e) => setTravelers(parseInt(e.target.value))}
-                                className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-primary"
-                            />
-                        </div>
-
-                        {/* Days Slider */}
-                        <div className="space-y-4">
-                            <div className="flex justify-between items-end">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Trip Duration (Days)</label>
-                                <span className="text-2xl font-black text-primary">{days}</span>
-                            </div>
-                            <input
-                                type="range" min="2" max="10" value={days}
-                                onChange={(e) => setDays(parseInt(e.target.value))}
-                                className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-primary"
-                            />
-                        </div>
+                        <Slider id="bc-travellers" label="Travellers" value={travelers} min={1} max={15} onChange={setTravelers} suffix={travelers === 1 ? 'person' : 'people'} />
+                        <Slider id="bc-days" label="Trip duration" value={days} min={2} max={10} onChange={setDays} suffix="days" />
                     </div>
                 </div>
 
-                <div className="bg-slate-900 rounded-[3rem] p-12 text-white relative overflow-hidden border border-white/10">
-                    <div className="absolute top-0 left-0 w-full h-1 bg-primary"></div>
-                    <div className="space-y-8 relative z-10">
-                        <div className="flex items-center gap-4 text-primary-light">
-                            <Wallet className="w-6 h-6" />
-                            <span className="font-black uppercase tracking-widest text-sm">Estimated Total</span>
-                        </div>
+                <div className="grain relative bg-ink rounded-3xl p-8 md:p-12 text-white overflow-hidden">
+                    <div aria-hidden="true" className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-primary/25 blur-[90px]" />
+                    <div className="relative z-[2]">
+                        <p className="text-[11px] uppercase tracking-[0.25em] text-white/50 mb-4">Estimated total</p>
+                        <motion.p
+                            key={total}
+                            initial={{ opacity: 0.4, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.4, ease }}
+                            className="font-serif font-light text-5xl sm:text-6xl md:text-7xl leading-none mb-3"
+                            aria-live="polite"
+                        >
+                            ₹{total.toLocaleString('en-IN')}
+                        </motion.p>
+                        <p className="text-white/50 text-sm">Inclusive of stay, meals &amp; travel support</p>
 
-                        <div>
-                            <p className="text-7xl font-black text-white leading-none mb-2">₹{total.toLocaleString()}</p>
-                            <p className="text-white/40 font-bold">Inclusive of stay, meals & travel support</p>
-                        </div>
+                        <ul className="mt-8 pt-8 border-t border-white/10 space-y-3">
+                            {['Group discount applied', 'Local support 24/7'].map((t) => (
+                                <li key={t} className="flex items-center gap-3 text-sm text-white/80">
+                                    <span className="w-6 h-6 rounded-full border border-secondary/40 text-secondary flex items-center justify-center"><Check className="w-3 h-3" /></span>
+                                    {t}
+                                </li>
+                            ))}
+                        </ul>
 
-                        <div className="pt-8 border-t border-white/10 space-y-4">
-                            <div className="flex items-center gap-3 text-sm font-medium text-white/80">
-                                <CheckCircle2 className="w-5 h-5 text-secondary" /> Group Discount Applied
-                            </div>
-                            <div className="flex items-center gap-3 text-sm font-medium text-white/80">
-                                <CheckCircle2 className="w-5 h-5 text-secondary" /> Local Support 24/7
-                            </div>
-                        </div>
-
-                        <Button className="w-full h-16 rounded-2xl bg-primary hover:bg-primary-light text-white font-black text-lg border-none mt-4 transition-all shadow-xl shadow-primary/20">
-                            Book This Budget
-                        </Button>
+                        <Link to="/booking" className="block mt-10">
+                            <Button variant="secondary" className="group w-full rounded-full">
+                                Book this budget <ArrowRight className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" />
+                            </Button>
+                        </Link>
                     </div>
-
-                    {/* Background Pattern */}
-                    <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`, backgroundSize: '32px 32px' }}></div>
                 </div>
             </div>
-        </section>
+        </motion.section>
     );
 };
 

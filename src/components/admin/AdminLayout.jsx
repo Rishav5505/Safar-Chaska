@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, Outlet, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Map, Calendar, LogOut, Settings, Package as PackageIcon } from 'lucide-react';
+import { LayoutDashboard, Map, Calendar, LogOut, Settings, Package as PackageIcon, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 
@@ -21,6 +21,7 @@ const AdminLayout = () => {
         { name: 'Dashboard', icon: LayoutDashboard, path: '/admin/dashboard' },
         { name: 'Manage Packages', icon: Map, path: '/admin/packages' },
         { name: 'Bookings', icon: Calendar, path: '/admin/bookings' },
+        { name: 'Enquiries', icon: MessageSquare, path: '/admin/enquiries' },
         { name: 'Settings', icon: Settings, path: '/admin/settings' },
     ];
 

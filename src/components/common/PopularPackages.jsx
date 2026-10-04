@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Clock, Star, ArrowUpRight, Loader } from 'lucide-react';
+import { ArrowUpRight, Loader } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import Reveal from './Reveal';
+import SectionHeader from './SectionHeader';
+import PackageCard from './PackageCard';
 import Button from './Button';
 import API from '../../utils/api';
 
@@ -21,9 +21,7 @@ const PopularPackages = () => {
                         .slice(0, 4)
                         .map(pkg => ({
                             ...pkg,
-                            price: pkg.price.toLocaleString(),
-                            rating: pkg.rating || "4.9",
-                            link: `/destination/${pkg._id}`,
+                            rating: pkg.rating || 4.9,
                             tag: pkg.tag || (pkg.isFeatured ? "Featured" : "Trending")
                         }));
 
@@ -39,7 +37,7 @@ const PopularPackages = () => {
     }, []);
 
     if (loading) return (
-        <div className="flex items-center justify-center py-24">
+        <div className="flex items-center justify-center py-24 bg-sand">
             <Loader className="w-8 h-8 text-primary animate-spin" />
         </div>
     );
@@ -47,62 +45,22 @@ const PopularPackages = () => {
     if (packages.length === 0) return null;
 
     return (
-        <section className="pt-4 md:pt-12 pb-8 md:pb-24 bg-white text-slate-900">
+        <section className="py-16 md:py-28 bg-sand text-ink">
             <div className="container-custom">
-                <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-10">
-                    <div className="text-center md:text-left">
-                        <Reveal center>
-                            <h2 className="text-4xl font-bold text-slate-900 tracking-tight">Popular Escapes</h2>
-                        </Reveal>
-                        <p className="text-slate-500 mt-2">Handpicked journeys for every kind of traveler.</p>
-                    </div>
-                    <Link to="/packages">
-                        <Button variant="outline" className="rounded-full px-8">View All Packages</Button>
+                <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
+                    <SectionHeader
+                        className="!mb-0"
+                        eyebrow="Curated Journeys"
+                        title={<>Popular <em>escapes</em></>}
+                        subtitle="Handpicked journeys for every kind of traveler."
+                    />
+                    <Link to="/packages" className="shrink-0">
+                        <Button variant="outline" className="rounded-full px-8 py-3 text-sm">View All Packages <ArrowUpRight className="w-4 h-4" /></Button>
                     </Link>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-                    {packages.map((pkg, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.1 }}
-                            className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 flex flex-col group"
-                        >
-                            <div className="relative h-64 overflow-hidden">
-                                <img src={pkg.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={pkg.title} />
-                                <div className="absolute top-4 left-4 py-1.5 px-4 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-widest text-slate-900">
-                                    {pkg.tag}
-                                </div>
-                            </div>
-                            <div className="p-8 flex-grow flex flex-col text-left">
-                                <div className="flex justify-between items-start mb-6">
-                                    <div>
-                                        <p className="text-primary font-bold uppercase text-[10px] tracking-widest mb-1">{pkg.location}</p>
-                                        <h3 className="text-2xl font-bold text-slate-900">{pkg.title}</h3>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className="text-2xl font-bold text-slate-900">₹{pkg.price}</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-6 py-4 border-y border-slate-50 mb-6 text-sm font-medium text-slate-500">
-                                    <div className="flex items-center gap-2">
-                                        <Clock className="w-4 h-4 text-primary" /> {pkg.duration}
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <Star className="w-4 h-4 text-secondary fill-secondary" /> {pkg.rating}
-                                    </div>
-                                </div>
-                                <Link to={pkg.link} className="mt-auto">
-                                    <Button className="w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2">
-                                        Details <ArrowUpRight className="w-4 h-4" />
-                                    </Button>
-                                </Link>
-                            </div>
-                        </motion.div>
-                    ))}
+                <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                    {packages.map((pkg, i) => <PackageCard key={pkg._id} pkg={pkg} index={i} />)}
                 </div>
             </div>
         </section>

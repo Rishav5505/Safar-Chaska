@@ -3,9 +3,33 @@ const Package = require('../models/packageModel');
 // @desc    Get all packages
 // @route   GET /api/packages
 // @access  Public
+// Optional query: ?category=Adventure&search=kashmir&minPrice=5000&maxPrice=20000&featured=true&sort=price|-price|-rating|newest&limit=8
+const SORTS = { price: { price: 1 }, '-price': { price: -1 }, '-rating': { rating: -1 }, newest: { createdAt: -1 } };
+
+const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 const getPackages = async (req, res) => {
     try {
-        const packages = await Package.find({});
+        const { category, search, minPrice, maxPrice, featured, sort, limit } = req.query;
+        const filter = {};
+
+        if (category && category !== 'All') filter.category = category;
+        if (featured === 'true') filter.isFeatured = true;
+        if (search) {
+            const rx = new RegExp(escapeRegex(String(search).slice(0, 60)), 'i');
+            filter.$or = [{ title: rx }, { location: rx }, { description: rx }];
+        }
+        if (minPrice || maxPrice) {
+            filter.price = {};
+            if (minPrice) filter.price.$gte = Number(minPrice);
+            if (maxPrice) filter.price.$lte = Number(maxPrice);
+        }
+
+        let query = Package.find(filter).sort(SORTS[sort] || { isFeatured: -1, createdAt: -1 });
+        const max = parseInt(limit, 10);
+        if (max > 0) query = query.limit(Math.min(max, 100));
+
+        const packages = await query;
         res.json(packages);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -33,10 +57,9 @@ const getPackageById = async (req, res) => {
 // @access  Private/Admin
 const createPackage = async (req, res) => {
     try {
-        const { title, description, location, price, duration, image, category, images, itinerary, inclusions, exclusions, isFeatured } = req.body;
-        const package = new Package({
-            title, description, location, price, duration, image, category, images, itinerary, inclusions, exclusions, isFeatured
-        });
+        const fields = ['title', 'description', 'location', 'price', 'originalPrice', 'duration', 'image', 'category', 'images', 'tag', 'rating', 'reviewCount', 'difficulty', 'bestSeason', 'groupSize', 'altitude', 'highlights', 'itinerary', 'inclusions', 'exclusions', 'isFeatured'];
+        const data = Object.fromEntries(fields.filter((f) => req.body[f] !== undefined).map((f) => [f, req.body[f]]));
+        const package = new Package(data);
         const createdPackage = await package.save();
         res.status(201).json(createdPackage);
     } catch (error) {

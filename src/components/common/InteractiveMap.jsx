@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Camera, Star, ArrowUpRight, Info } from 'lucide-react';
-import Reveal from './Reveal';
+import { ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import SectionHeader from './SectionHeader';
+
+const ease = [0.22, 1, 0.36, 1];
 
 const spots = [
     {
@@ -39,83 +42,129 @@ const spots = [
 ];
 
 const InteractiveMap = () => {
-    const [activeSpot, setActiveSpot] = useState(null);
+    const [activeId, setActiveId] = useState(spots[0].id);
+    const active = spots.find((s) => s.id === activeId) || spots[0];
+    const activeIdx = spots.indexOf(active);
 
     return (
-        <section className="py-8 md:py-24 bg-white text-slate-900 overflow-hidden">
+        <section className="py-16 md:py-28 bg-ink overflow-hidden">
             <div className="container-custom">
-                <div className="text-center mb-10 md:mb-16">
-                    <Reveal center>
-                        <h2 className="text-4xl font-bold text-slate-900 tracking-tight">Interactive Map</h2>
-                    </Reveal>
-                    <p className="text-slate-500 mt-4">Discover the hidden gems around Chakrata.</p>
-                </div>
+                <SectionHeader
+                    dark
+                    eyebrow="Interactive Map"
+                    title={<>Hidden gems around <em>Chakrata</em></>}
+                    subtitle="Tap a marker to explore the places our captains love most."
+                />
 
-                {/* Container without overflow-hidden to let tooltips pop out */}
-                <div className="max-w-5xl mx-auto relative bg-slate-100 rounded-3xl aspect-[16/9] shadow-inner border border-slate-200">
-
-                    {/* Background Layer (Colorful & Vibrant) */}
-                    <div className="absolute inset-0 rounded-3xl overflow-hidden bg-slate-200">
-                        <div className="absolute inset-0 opacity-100 pointer-events-none">
-                            <img
-                                src="https://images.unsplash.com/photo-1464817739973-0128fe77a1b7?auto=format&fit=crop&q=80&w=2000"
-                                alt="Himalayan Map"
-                                className="w-full h-full object-cover saturate-[1.6]"
-                                onError={(e) => {
-                                    e.target.src = "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=2000";
-                                }}
-                            />
-                        </div>
-                        <div className="absolute inset-0 bg-primary/20 backdrop-blur-[2px]"></div>
-                    </div>
-
-                    {/* Spots */}
-                    {spots.map((spot) => (
+                <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+                    {/* Map */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 24 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.9, ease }}
+                        className="lg:col-span-8 relative rounded-3xl overflow-hidden aspect-[4/3] md:aspect-[16/10] border border-white/10 bg-white/[0.03]"
+                    >
+                        <img
+                            src="https://images.unsplash.com/photo-1464817739973-0128fe77a1b7?auto=format&fit=crop&q=80&w=2000"
+                            alt="Aerial view of the Himalayan foothills around Chakrata"
+                            loading="lazy"
+                            className="absolute inset-0 w-full h-full object-cover grayscale-[35%]"
+                            onError={(e) => {
+                                e.currentTarget.onerror = null;
+                                e.currentTarget.src = "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=2000";
+                            }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-ink/40" />
+                        {/* Faint topographic grid */}
                         <div
-                            key={spot.id}
-                            className="absolute z-20 cursor-pointer group"
-                            style={{ left: `${spot.x}%`, top: `${spot.y}%` }}
-                            onMouseEnter={() => setActiveSpot(spot)}
-                            onMouseLeave={() => setActiveSpot(null)}
-                            onClick={() => setActiveSpot(activeSpot?.id === spot.id ? null : spot)}
-                        >
-                            <div className="relative -translate-x-1/2 -translate-y-1/2">
-                                <motion.div
-                                    animate={{ scale: activeSpot?.id === spot.id ? 1.2 : 1 }}
-                                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${activeSpot?.id === spot.id ? 'bg-primary text-white shadow-lg' : 'bg-white text-slate-900 shadow-sm'}`}
+                            aria-hidden="true"
+                            className="absolute inset-0 opacity-[0.12]"
+                            style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.6) 1px, transparent 1px)', backgroundSize: '64px 64px' }}
+                        />
+
+                        {spots.map((spot, i) => {
+                            const isActive = spot.id === activeId;
+                            return (
+                                <button
+                                    key={spot.id}
+                                    type="button"
+                                    className="group absolute z-20 -translate-x-1/2 -translate-y-1/2 p-2 focus-visible:outline-none"
+                                    style={{ left: `${spot.x}%`, top: `${spot.y + 10}%` }}
+                                    onMouseEnter={() => setActiveId(spot.id)}
+                                    onFocus={() => setActiveId(spot.id)}
+                                    onClick={() => setActiveId(spot.id)}
+                                    aria-label={`${spot.name}: ${spot.desc}`}
+                                    aria-pressed={isActive}
                                 >
-                                    <MapPin className="w-5 h-5" />
+                                    <span className="relative flex items-center justify-center w-9 h-9">
+                                        {isActive && <span className="absolute inset-0 rounded-full bg-secondary/40 animate-ping" />}
+                                        <span className={`relative flex items-center justify-center w-9 h-9 rounded-full border text-xs font-serif transition-all duration-500 ease-premium group-focus-visible:ring-2 group-focus-visible:ring-white ${isActive ? 'bg-secondary border-secondary text-ink' : 'bg-ink/60 backdrop-blur-md border-white/40 text-white group-hover:border-secondary'}`}>
+                                            {i + 1}
+                                        </span>
+                                    </span>
+                                    <span className={`hidden md:block absolute left-1/2 -translate-x-1/2 top-full mt-1 whitespace-nowrap text-[10px] uppercase tracking-[0.2em] transition-colors duration-300 ${isActive ? 'text-white' : 'text-white/60'}`}>
+                                        {spot.name}
+                                    </span>
+                                </button>
+                            );
+                        })}
+
+                        <p className="absolute bottom-4 left-4 text-[10px] uppercase tracking-[0.25em] text-white/50">Chakrata · Uttarakhand</p>
+                    </motion.div>
+
+                    {/* Detail panel */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 24 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.9, delay: 0.1, ease }}
+                        className="lg:col-span-4 flex flex-col gap-4"
+                    >
+                        <div className="relative rounded-3xl overflow-hidden bg-white/[0.03] border border-white/10 flex-1">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={active.id}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.45 }}
+                                >
+                                    <div className="aspect-[16/10] overflow-hidden">
+                                        <motion.img
+                                            initial={{ scale: 1.08 }}
+                                            animate={{ scale: 1 }}
+                                            transition={{ duration: 1.2, ease }}
+                                            src={active.image}
+                                            alt={active.name}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                    <div className="p-6 md:p-7">
+                                        <p className="font-serif italic text-secondary text-sm mb-1">0{activeIdx + 1}</p>
+                                        <h3 className="font-serif font-light !text-white text-3xl mb-2">{active.name}</h3>
+                                        <p className="text-white/60 leading-relaxed text-sm">{active.desc}</p>
+                                        <Link to="/chakrata" className="group mt-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-white/80 hover:text-secondary transition-colors">
+                                            Explore Chakrata <ArrowUpRight className="w-4 h-4 transition-transform duration-500 group-hover:rotate-45" />
+                                        </Link>
+                                    </div>
                                 </motion.div>
-
-                                <AnimatePresence>
-                                    {activeSpot?.id === spot.id && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: spot.y < 30 ? -10 : 10, scale: 0.9 }}
-                                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                                            exit={{ opacity: 0, y: spot.y < 30 ? -10 : 10, scale: 0.9 }}
-                                            className={`absolute ${spot.y < 30 ? 'top-full mt-4' : 'bottom-full mb-4'} left-1/2 -translate-x-1/2 w-64 bg-white rounded-2xl shadow-2xl p-4 z-50 border border-slate-100`}
-                                        >
-                                            <div className="h-32 rounded-xl overflow-hidden mb-4">
-                                                <img src={spot.image} alt={spot.name} className="w-full h-full object-cover" />
-                                            </div>
-                                            <h4 className="font-bold text-slate-900 mb-1">{spot.name}</h4>
-                                            <p className="text-xs text-slate-500 leading-relaxed mb-3">{spot.desc}</p>
-                                            <div className="flex items-center text-[10px] font-bold text-primary uppercase tracking-widest gap-1">
-                                                <Info className="w-3 h-3" /> View Details
-                                            </div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </div>
+                            </AnimatePresence>
                         </div>
-                    ))}
 
-                    {/* Helper text */}
-                    <div className="absolute bottom-6 left-6 right-6 flex items-center justify-center pointer-events-none">
-                        <div className="bg-white/90 backdrop-blur-md px-6 py-2 rounded-full border border-slate-200 shadow-sm text-xs font-medium text-slate-500">
-                            Click on a point to reveal details
+                        <div className="grid grid-cols-2 gap-2">
+                            {spots.map((spot, i) => (
+                                <button
+                                    key={spot.id}
+                                    type="button"
+                                    onClick={() => setActiveId(spot.id)}
+                                    className={`text-left px-4 py-3 rounded-2xl border text-sm transition-all duration-500 ease-premium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 ${spot.id === activeId ? 'border-secondary/50 bg-white/[0.06] text-white' : 'border-white/10 text-white/60 hover:border-white/25 hover:text-white'}`}
+                                >
+                                    <span className="font-serif italic text-secondary mr-2">{i + 1}</span>{spot.name}
+                                </button>
+                            ))}
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </section>

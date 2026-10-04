@@ -1,10 +1,10 @@
-import heroImg from '../assets/IMG_2235.JPG.jpeg';
-import other1 from '../assets/IMG_2237.JPG.jpeg';
-import other2 from '../assets/IMG_2239.JPG.jpeg';
-import other3 from '../assets/IMG_3175.JPG.jpeg';
-import other4 from '../assets/IMG_5983.JPG.jpeg';
-import other5 from '../assets/IMG_7994.JPG.jpeg';
-import other6 from '../assets/IMG_8022.JPG.jpeg';
+import heroImg from '../assets/optimized/IMG_2235.webp';
+import other1 from '../assets/optimized/IMG_2237.webp';
+import other2 from '../assets/optimized/IMG_2239.webp';
+import other3 from '../assets/optimized/IMG_3175.webp';
+import other4 from '../assets/optimized/IMG_5983.webp';
+import other5 from '../assets/optimized/IMG_7994.webp';
+import other6 from '../assets/optimized/IMG_8022.webp';
 
 export const chakrataData = {
     id: "chakrata",

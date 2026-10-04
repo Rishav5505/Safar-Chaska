@@ -8,14 +8,15 @@ const Button = ({
     className,
     ...props
 }) => {
-    const baseStyles = "inline-flex items-center justify-center rounded-2xl font-bold transition-all duration-500 focus:outline-none focus:ring-4 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.05] active:scale-[0.95] hover:shadow-2xl";
+    const baseStyles = "shine inline-flex items-center justify-center gap-2 rounded-2xl font-semibold tracking-wide transition-all duration-500 ease-premium focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/25 disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]";
 
     const variants = {
-        primary: "bg-primary text-white shadow-lg shadow-primary/30 hover:bg-primary-dark border border-white/10",
-        secondary: "bg-secondary text-white shadow-lg shadow-secondary/30 hover:bg-secondary-dark border border-white/10",
-        outline: "border-2 border-primary text-primary hover:bg-primary/5 bg-transparent",
+        primary: "bg-primary text-white shadow-[0_10px_30px_-10px_rgba(15,118,110,0.6)] hover:shadow-[0_18px_40px_-12px_rgba(15,118,110,0.7)] hover:bg-[#0d6961]",
+        secondary: "bg-secondary text-ink shadow-[0_10px_30px_-10px_rgba(245,158,11,0.6)] hover:bg-secondary-light",
+        outline: "border border-ink/15 text-ink hover:border-ink hover:bg-ink hover:text-white bg-transparent",
         ghost: "text-slate-600 hover:text-primary hover:bg-slate-50",
-        white: "bg-white text-slate-900 hover:bg-slate-50 shadow-xl shadow-black/5"
+        white: "bg-white text-ink hover:bg-sand shadow-premium",
+        glass: "bg-white/10 text-white border border-white/25 backdrop-blur-md hover:bg-white hover:text-ink"
     };
 
     const sizes = {
